@@ -1,6 +1,6 @@
 require_relative '../views/botreply'
 class WebhooksController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, :authenticate_user!
 
   def messenger
     if params["hub.verify_token"] == ENV['messenger_verification_token']

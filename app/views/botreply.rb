@@ -15,7 +15,7 @@ def reply(sender)
                                     "image_url": "https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/24293918_160361861383576_6874016573394267944_n.png?oh=90e1db160eb8e58d77aba118de11967e&oe=5A93E6C4",
                                     "buttons": [{
                                       "type": "web_url",
-                                      "url": "#{ENV['NGROK']}/welcome",
+                                      "url": "#{ENV['NGROK']}",
                                       "title": "Open Kitty",
                                       "webview_height_ratio": "tall",
                                       "webview_share_button": "hide",
@@ -307,7 +307,7 @@ def starting_kitty_reply(sender)
                                 "buttons":[
                                   {
                                     "type": "web_url",
-                                    "url": "#{ENV['NGROK']}/welcome",
+                                    "url": "#{ENV['NGROK']}",
                                     "title": "Open Kitty",
                                     "webview_height_ratio": "tall",
                                     "webview_share_button": "hide",
@@ -456,7 +456,7 @@ def see_profile_reply(sender)
                                 "buttons":[
                                   {
                                     "type": "web_url",
-                                    "url": "#{ENV['NGROK']}/welcome",
+                                    "url": "#{ENV['NGROK']}",
                                     "title": "Open Kitty",
                                     "webview_height_ratio": "tall",
                                     "webview_share_button": "hide",

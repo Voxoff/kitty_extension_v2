@@ -1,12 +1,34 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
+  # Defining root depending on whether logged in or not
   unauthenticated do
     root 'pages#home'
   end
-
   authenticated do
-    root 'pages#redirect'
+    root 'pages#call_facebook'
+  end
+
+  get '/redirect', to: 'pages#redirect', as: 'redirect'
+
+  # GROUPS CONTROLLERS
+  resources :groups, only: [:show, :update, :destroy]
+  get '/new_kitty', to: 'groups#new_kitty', as: 'new_group'
+  get '/reminder', to: 'groups#reminder', as: 'groups_reminder'
+
+  # USERS CONTROLLERS
+  resources :users, only: [:show]
+  get '/transactions/:id', to: 'users#transactions', as: 'user_transactions'
+
+  # WEBHOOKS CONTROLLER
+  get 'webhooks', to: 'webhooks#messenger'
+  post 'webhooks', to: 'webhooks#messenger_receive_message'
+
+  # API
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :users, only: [ :create ]
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

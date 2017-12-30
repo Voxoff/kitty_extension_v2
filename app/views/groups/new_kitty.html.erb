@@ -1,0 +1,87 @@
+<% @title = "Create a Kitty" %>
+<!-- Content -->
+<div class="container">
+  <div class="plain-card-content-center-vertical-max-height-with-bottom-btn">
+    <div class="content">
+      <h1 class="no-margin no-padding color-primary">Kitty</h1>
+      <h3>Time to get setup</h3>
+      <div class="card-row-space"></div>
+      <%= @group.name = nil %>
+      <label class="input-form-label" for="first_name">Name your Kitty (required)</label>
+      <%= simple_form_for [ @group ] do |f| %>
+      <%= f.input :name, :maxlength => "22", :label => false, :required => true, :placeholder => "i.e. Holiday in Lisbon", :class => "form-control", :input_html => { :id => "new_kitty_form" } %>
+      <%# f.input :user_id, as: :hidden, input_html: { value: @user.id } %>
+      <%# f.input :group_id, as: :hidden, input_html: { value: @group.id } %>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Button -->
+<div class="fixed-btn-section">
+  <button class="send-btn-primary"><i class="fa fa-plus fa-lg fa-fw mr-2" aria-hidden="true"></i>Setup Your Group Kitty</button>
+</div>
+<% end %>
+
+<!-- JAVASCRIPT FOR THE BUTTON TO SEND TO GROUP, TURN KITTY_CREATED=TRUE AND REDIRECT -->
+<% content_for(:after_js) do %>
+  <!-- Including the Facebook Extension SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.com/en_GB/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+  </script>
+
+  <script>
+    // console.log("<%= @user.first_name %>");
+    document.querySelector(".send-btn-primary").addEventListener("click", () => {
+      console.log("<%= @user.first_name %>");
+      let message = {
+                    "attachment":{
+                      "type":"template",
+                      "payload":{
+                        "template_type":"generic",
+                        "elements": [{
+                          "title":"<%= @user.first_name %> just started a Kitty for this group!",
+                          "subtitle": "Kitty: Money Sharing Made Simple",
+                          "default_action":{
+                            "type":"web_url",
+                            "url": "https://kittymoneysplitting.herokuapp.com/"
+                          },
+                          "buttons":[{
+                            "type":"web_url",
+                            "url":"<%= ENV['NGROK'] %>/welcome/",
+                            "title":"Check Out Kitty",
+                            "webview_height_ratio": "full",
+                            "webview_share_button": "hide",
+                            "messenger_extensions": true
+                          }]
+                        }]
+                      }
+                    }
+                  };
+      if (document.getElementById("new_kitty_form").value !== "") {
+        MessengerExtensions.beginShareFlow(function(share_response) {
+          // User dismissed without error, but did they share the message?
+          if(share_response.is_sent){
+            // The user actually did share.
+            // Perhaps close the window w/ requestCloseBrowser().
+            <% @group.kitty_created = true %>
+            <% @group.save %>
+            // window.location.href="/extension/groups/<%= @group.id %>?user_id=<%= @user.id %>&group_id=<%= @group.id %>"
+          }
+        },
+        function(errorCode, errorMessage) {
+          // An error occurred in the process
+
+        },
+        message,
+        "current_thread");
+      }
+    });
+
+  </script>
+<% end %>

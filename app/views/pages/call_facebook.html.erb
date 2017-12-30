@@ -1,0 +1,73 @@
+<% @title = "Loading..." %>
+
+<div class="plain-card-content-center-vertical-max-height">
+  <div class="text-center">
+    <i class="fa fa-spinner fa-pulse fa-lg navigation-link no-margin color-primary fa-3x" aria-hidden="true"></i>
+    <% fun_arr = ["Using litter responsibly", "Compawling the database", "Purrsuading your mates to join", "Ensuring purrrfect operation", "Cat-aloging expenses", "Preventing cat-astrophe"] %>
+    <div class="title-section">
+      <div class="text mt-5 pt-5">
+        <p class="mb-2 text-center" style="font-weight: 300; color: grey; letter-spacing: 2px; font-size: 0.8rem;">Please don't close while loading.</p>
+        <p class="mb-2 text-center" style="font-weight: 300; color: grey; letter-spacing: 2px; font-size: 0.8rem;">Hold on we're just...</p>
+        <p class="no-margin text-center pulsate" id="header" style="font-weight: 300; color: grey; letter-spacing: 2px;"><%= fun_arr.sample.upcase %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= link_to "Logout", destroy_user_session_path, method: :delete %>
+
+<!-- JAVASCRIPT WHICH CALLS THE API, RETRIEVES OR CREATES USER DATA, REDIRECTS (redirect chosen in API action) -->
+<%= content_for(:after_js) do %>
+
+  <!-- Including the Facebook Extension SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.com/en_GB/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+  </script>
+
+  <script>
+    // AJAX Fetch Request to Kitty API
+    window.extAsyncInit = function() {
+      let getdetails = function(result) {
+        fetch("/api/v1/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ 'user': result, 'signed_in_id': {user_id: <%= @user.id %>} })
+        })
+          .then(response => response.json())
+          .then(data => {
+            // Redirection Occurs using API response
+            window.location.replace(data.url)
+          });
+      }
+      // Facebook Messenger SDK Get Context of Thread and User
+      MessengerExtensions.getContext(<%= ENV['APP_ID'] %>,
+        getdetails,
+        function error(result){
+          document.getElementById('header').innerText = 'error in get context'
+        });
+      // Facebook Messenger SDK Ask Permission to use data if necessary
+      // MessengerExtensions.askPermission(
+      //   function(permission_response) {
+      //     // Person grants or rejects the asked permission.
+      //     let permissions = permission_response.permissions; // list of all permissions granted
+      //     let isGranted = permission_response.isGranted; // Boolean
+      //     if (isGranted) {
+      //       // User has granted user_profile permission, allow to proceed.
+      //     }
+      //   }, function(errorCode, errorMessage) {
+      //     // Error occurred in permissions, usually because trying to access page from Laptop not phone.
+      //     document.getElementById('header').innerText = 'Not available on this device';
+      //   },
+      //   "user_profile"
+      // );
+    };
+  </script>
+<% end %>
