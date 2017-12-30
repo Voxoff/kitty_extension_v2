@@ -10,10 +10,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171229215301) do
+ActiveRecord::Schema.define(version: 20171230110135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "user_id"
+    t.string "title"
+    t.string "split_type", default: "equal"
+    t.string "location"
+    t.string "description"
+    t.string "payment_method", default: "card"
+    t.integer "amount_pennies", default: 0, null: false
+    t.string "amount_currency", default: "GBP", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_expenses_on_group_id"
+    t.index ["user_id"], name: "index_expenses_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "tid"
+    t.string "name", default: "Your Kitty"
+    t.string "thread_type"
+    t.boolean "kitty_created", default: false
+    t.boolean "closed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "splits", force: :cascade do |t|
+    t.bigint "expense_id"
+    t.bigint "user_id"
+    t.integer "amount_pennies", default: 0, null: false
+    t.string "amount_currency", default: "GBP", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id"], name: "index_splits_on_expense_id"
+    t.index ["user_id"], name: "index_splits_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -44,4 +90,10 @@ ActiveRecord::Schema.define(version: 20171229215301) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "expenses", "groups"
+  add_foreign_key "expenses", "users"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users"
+  add_foreign_key "splits", "expenses"
+  add_foreign_key "splits", "users"
 end

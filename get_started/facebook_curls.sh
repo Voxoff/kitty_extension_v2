@@ -34,12 +34,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
 # This initiates the home url for Kitty
 curl -X POST -H "Content-Type: application/json" -d ' {
   "home_url" : {
-     "url": "https://kittygroupspending.herokuapp.com/welcome",
+     "url": "https://64c53f3c.ngrok.io",
      "webview_height_ratio": "tall",
      "webview_share_button": "hide",
      "in_test":false
   }
-}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAdHTu6J8uMBAF8WikUAZA3rTN4pDhylmY5oxAd6Wd2PivLNtqRFvS5SnZBZAbLcj10cryExZB7L55YJI0ZBvbxAlTMT8jAnZAKOo8LZCAMheGCQHjTLltW8tZAPNeZAwUTdBIhxsKm7IkzEJys59oTsU3DAZAxXdvUdqZCTYjh7OuLywZDZD"
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAEWFPF7NhkBAJoADZBZC3msWJGN6XZAZAtggnyFy42Ib9IZC7ZAZAojNzE9T98z81B6aLX00oZAxTQ1pkE6onijSLM5oee7yxYOZAlB4TnN2LcLpbKNBr25e7HVqec0C4RlU0DMQZCdy1QIgmqyZBLjgkS4iwQNtvwxmZCMUrvTffVGsgZDZD"
 
 # this initaites the greeting
 
