@@ -1,0 +1,37 @@
+div.tab {
+    overflow: hidden;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+  color: white;
+  height: 44px;
+  width: 50%;
+  background-color: $green;
+  border: none;
+  outline: none;
+  transition: 0.3s;
+  font-size: 18px;
+}
+
+/* Create an active/current tablink class */
+.tablinks.active {
+  padding-top: 4px;
+  border-bottom: 4px solid white;
+  opacity: 0.9;
+}
+
+// /* Style the tab content */
+// .tabcontent {
+//     display: none;
+//     padding: 6px 0px 6px 12px;
+//     // border: 1px solid $brand-primary;
+//     // border-left: none;
+//     // border-right: none;
+//     // border-bottom: none;
+// }

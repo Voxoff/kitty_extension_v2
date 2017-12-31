@@ -1,0 +1,27 @@
+.top-form {
+  background-color: $brand-primary;
+  width: 100vw;
+  height: 40px;
+}
+.brand-primary {
+  background-color: $brand-primary;
+  color: black;
+  // text-decoration: underline;
+}
+input::placeholder {
+  color: black !important;
+  font-style: italic;
+  font-family: Poppins;
+  opacity: 0.6;
+  // text-decoration: underline;
+}
+
+.form-control {
+  border-radius: 10px;
+  box-shadow: 1px solid $brand-primary !important;
+  height: 50px;
+}
+
+.form-control:focus {
+  border: 1px solid $brand-primary !important;
+}

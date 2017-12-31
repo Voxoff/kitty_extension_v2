@@ -1,0 +1,28 @@
+.facebook-login-btn {
+  height: 50px;
+  width: 300px;
+  background-color: $fb-blue;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.facebook-login-btn a {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.facebook-btn-position {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.continue-with-facebook {
+  color: white;
+  font-family: 'Roboto';
+  font-weight: bold;
+}

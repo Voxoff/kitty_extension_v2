@@ -6,7 +6,6 @@
       <h1 class="no-margin no-padding color-primary">Kitty</h1>
       <h3>Time to get setup</h3>
       <div class="card-row-space"></div>
-      <%= @group.name = nil %>
       <label class="input-form-label" for="first_name">Name your Kitty (required)</label>
       <%= simple_form_for [ @group ] do |f| %>
       <%= f.input :name, :maxlength => "22", :label => false, :required => true, :placeholder => "i.e. Holiday in Lisbon", :class => "form-control", :input_html => { :id => "new_kitty_form" } %>
@@ -53,7 +52,7 @@
                           },
                           "buttons":[{
                             "type":"web_url",
-                            "url":"<%= ENV['NGROK'] %>/welcome/",
+                            "url":"<%= ENV['NGROK'] %>",
                             "title":"Check Out Kitty",
                             "webview_height_ratio": "full",
                             "webview_share_button": "hide",

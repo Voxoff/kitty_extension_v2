@@ -1,0 +1,101 @@
+.send-btn-primary {
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.20);
+  background: $green;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 22px;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 97%;
+  margin: 5px;
+  border: none;
+}
+
+.send-btn-warning {
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.20);
+  background: $red;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 22px;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 97%;
+  margin: 5px;
+  border: none;
+}
+
+.send-btn-info {
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.20);
+  background: $info-blue;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 22px;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 97%;
+  margin: 5px;
+  border: none;
+}
+
+.send-btn-fb {
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.20);
+  background: $fb-blue;
+  border-radius: 4px;
+  font-size: 18px;
+  color: #FFFFFF;
+  line-height: 22px;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 97%;
+  margin: 5px;
+  border: none;
+}
+
+.send-btn-primary:active {
+  opacity: 0.8;
+}
+.send-btn-warning:active {
+  opacity: 0.8;
+}
+.send-btn-info:active {
+  opacity: 0.8;
+}
+.send-btn-fb:active {
+  opacity: 0.8;
+}
+
+.send-inner {
+  display: flex;
+  align-items: center;
+
+}
+.paper-plane {
+  margin-right: 10px;
+}
+
+.fixed-btn-section {
+  max-height: 61px;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.send-button-spacer {
+  height: 61px;
+}

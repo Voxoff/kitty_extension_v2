@@ -1,0 +1,127 @@
+.table {
+  margin-bottom: 1.5rem;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f7f8fb;
+}
+
+.table-primary,
+.table-primary > th,
+.table-primary > td {
+  background-color: #b8daff;
+}
+
+.table-hover .table-primary:hover {
+  background-color: #9fcdff;
+}
+
+.table-hover .table-primary:hover > td,
+.table-hover .table-primary:hover > th {
+  background-color: #9fcdff;
+}
+
+.table-secondary,
+.table-secondary > th,
+.table-secondary > td {
+  background-color: #d1d3d5;
+}
+
+.table-hover .table-secondary:hover {
+  background-color: #c4c6c9;
+}
+
+.table-hover .table-secondary:hover > td,
+.table-hover .table-secondary:hover > th {
+  background-color: #c4c6c9;
+}
+
+.table-success,
+.table-success > th,
+.table-success > td {
+  background-color: #beefd7;
+}
+
+.table-hover .table-success:hover {
+  background-color: #aaeaca;
+}
+
+.table-hover .table-success:hover > td,
+.table-hover .table-success:hover > th {
+  background-color: #aaeaca;
+}
+
+.table-info,
+.table-info > th,
+.table-info > td {
+  background-color: #b8ebf4;
+}
+
+.table-hover .table-info:hover {
+  background-color: #a2e5f1;
+}
+
+.table-hover .table-info:hover > td,
+.table-hover .table-info:hover > th {
+  background-color: #a2e5f1;
+}
+
+.table-warning,
+.table-warning > th,
+.table-warning > td {
+  background-color: #ffeab8;
+}
+
+.table-hover .table-warning:hover {
+  background-color: #ffe29f;
+}
+
+.table-hover .table-warning:hover > td,
+.table-hover .table-warning:hover > th {
+  background-color: #ffe29f;
+}
+
+.table-danger,
+.table-danger > th,
+.table-danger > td {
+  background-color: #eebec8;
+}
+
+.table-hover .table-danger:hover {
+  background-color: #e9aab7;
+}
+
+.table-hover .table-danger:hover > td,
+.table-hover .table-danger:hover > th {
+  background-color: #e9aab7;
+}
+
+.table-light,
+.table-light > th,
+.table-light > td {
+  background-color: #f9fafb;
+}
+
+.table-hover .table-light:hover {
+  background-color: #eaedf1;
+}
+
+.table-hover .table-light:hover > td,
+.table-hover .table-light:hover > th {
+  background-color: #eaedf1;
+}
+
+.table-dark,
+.table-dark > th,
+.table-dark > td {
+  background-color: #c1c2c3;
+}
+
+.table-hover .table-dark:hover {
+  background-color: #b4b5b6;
+}
+
+.table-hover .table-dark:hover > td,
+.table-hover .table-dark:hover > th {
+  background-color: #b4b5b6;
+}

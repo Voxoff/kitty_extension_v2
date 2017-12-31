@@ -1,12 +1,21 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="plain-card-content-center-vertical-max-height">
+  <div class="content text-center">
+    <h1 class="color-primary">Welcome to Kitty</h1>
+    <p>Making group spending as simple as possible</p>
 
-<% if current_user %>
-  <%= current_user.inspect %>
-<% end %>
+    <div style="height:100px;"></div>
+    <div class="facebook-btn-position">
+      <div class="facebook-login-btn">
+        <% unless current_user %>
+        <%= link_to user_facebook_omniauth_authorize_path do %>
+          <h5 class="no-margin continue-with-facebook"><i class="fa fa-facebook fa-fw fa-lg" aria-hidden="true"></i></h5>
+          <h5 class="no-margin continue-with-facebook pl-2">Continue with Facebook</h5>
+        <% end %>
+        <% else %>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        <% end %>
+      </div>
 
-<% unless current_user %>
-  <%= link_to "Continue with Facebook", user_facebook_omniauth_authorize_path %>
-<% else %>
-  <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-<% end %>
+    </div>
+  </div>
+</div>

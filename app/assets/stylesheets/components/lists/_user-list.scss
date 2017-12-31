@@ -1,0 +1,23 @@
+.user-list-item {
+  height: 64px;
+  display: flex;
+  padding-left: 20px;
+  align-items: center;
+}
+
+.user-content-divider {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.1)
+}
+
+.user-list-item-divider-content {
+  flex-grow: 1;
+  margin: 5px 0;
+}
+
+.list-profile-img-container {
+  width: 56px;
+  padding: 0;
+}

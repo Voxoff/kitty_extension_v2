@@ -1,0 +1,136 @@
+.groups-card-img-top {
+  width: 100%;
+  background-size: 100%;
+  border-top-left-radius: .625rem;
+  border-top-right-radius: .625rem;
+  vertical-align: middle;
+  border-style: none;
+}
+
+.group-card-img-size {
+  height: 200px;
+}
+
+// 2 Person Group Photo Grid
+.group-card-members-grid-2 {
+  display: flex;
+}
+
+.group-card-members-grid-2-child {
+  flex-grow: 1;
+  border-top-left-radius: .625rem;
+  border-top-right-radius: .625rem;
+  background-position: center;
+  background-size: 120% 100%;
+}
+
+.group-card-members-grid-2-child:first-child {
+  border-right: 2px solid white;
+  border-top-right-radius: 0rem;
+}
+.group-card-members-grid-2-child:last-child {
+  border-left: 2px solid white;
+  border-top-left-radius: 0rem;
+}
+
+// 3 Person Group Photo Grid
+.group-card-members-grid-over2 {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.group-card-members-grid-3-child-a {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  border-top-right-radius: 0rem;
+  border-top-left-radius: .625rem;
+  border-right: 2px solid white;
+  background-position: center;
+  background-size: 120% 100%;
+}
+.group-card-members-grid-3-child-b {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border-top-left-radius: 0rem;
+  border-top-right-radius: .625rem;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  background-size: 100%;
+}
+.group-card-members-grid-3-child-c {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  border-top-right-radius: 0rem;
+  border-top-left-radius: 0rem;
+  border-left: 2px solid white;
+  border-top: 2px solid white;
+  background-size: 100%;
+}
+
+// 4 Person Group Photo Grid
+.group-card-members-grid-4-child-a {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border-top-right-radius: 0rem;
+  border-top-left-radius: .625rem;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  background-size: 100%;
+}
+.group-card-members-grid-4-child-b {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  border-top-right-radius: 0rem;
+  border-top-left-radius: 0rem;
+  border-right: 2px solid white;
+  border-top: 2px solid white;
+  background-size: 100%;
+}
+.group-card-members-grid-4-child-c {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border-top-left-radius: 0rem;
+  border-top-right-radius: .625rem;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  background-size: 100%;
+}
+.group-card-members-grid-4-child-d {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  border-top-right-radius: 0rem;
+  border-top-left-radius: 0rem;
+  border-left: 2px solid white;
+  border-top: 2px solid white;
+  background-size: 100%;
+}
+
+.multiple-buttons {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+.title-flex {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}

@@ -1,0 +1,13 @@
+.spacing-bar {
+  height: 1px;
+  width: 100%;
+  background-color: $brand-primary;
+  margin-bottom: 10px;
+}
+
+.horiz-pad {
+  padding: 0px 0px 0px 10px;
+}
+.rotated {
+  transform: rotate(180deg);
+}

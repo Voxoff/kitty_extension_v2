@@ -1,0 +1,54 @@
+/* The heart of the matter */
+.testimonial-group > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-bottom: 10px;
+}
+.user-self {
+  border-right: 1px solid rgba(0,0,0,0.1)
+}
+.testimonial-group > .row > .col-xs-4 {
+  display: inline-block;
+  float: none;
+}
+
+.side-scroller-base {
+  // border-bottom: 1px solid rgba(0,0,0,0.1)
+}
+
+.side-scroller-description {
+  margin: 0;
+}
+.side-scroller-description p {
+  margin-bottom: 12px;
+}
+
+// .vertical-line {
+//   border-right: 1px solid rgba(0,0,0,0.05);
+//   height: 100%;
+// }
+
+/* Decorations */
+.user-selector-area {
+  color: rgba(0,0,0,0.5);
+  font-size: 10px;
+  padding-bottom: 0px;
+  padding-top: 10px;
+}
+
+.user-selector-area p {
+  padding-bottom: 0;
+}
+
+.current-user {
+}
+
+p.under-avatar-text {
+  margin-top: 6px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+// .col-xs-4 { background: $brand-primary; }
+// .col-xs-3:nth-child(3n+1) { background: #c69; }
+// .col-xs-3:nth-child(3n+2) { background: #9c6; }
+// .col-xs-3:nth-child(3n+3) { background: #69c; }

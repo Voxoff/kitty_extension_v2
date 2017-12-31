@@ -1,0 +1,12 @@
+.navbar-tick-btn {
+  position: absolute;
+  top: 15px;
+  right: 9px;
+  background: transparent;
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.navbar-tick-btn:active {
+  transform: scale(2);
+}

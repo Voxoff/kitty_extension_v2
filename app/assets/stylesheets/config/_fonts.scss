@@ -1,9 +1,13 @@
 // Import Google fonts
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Raleway:400,100,300,700,500");
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,500,900|Roboto');
 
 // Define fonts for body and headers
-$body-font: "Open Sans", "Helvetica", "sans-serif";
-$headers-font: "Raleway", "Helvetica", "sans-serif";
+$body-font: "Roboto", "Helvetica", "sans-serif";
+$headers-font: "Poppins", "Helvetica", "sans-serif";
+
+h5 {
+  font-family: $body-font !important
+}
 
 // To use a font file (.woff) uncomment following lines
 // @font-face {

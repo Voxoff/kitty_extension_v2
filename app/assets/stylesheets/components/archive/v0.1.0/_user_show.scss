@@ -1,0 +1,168 @@
+// div.tab {
+//     overflow: hidden;
+//     background-color: #FFFFFF;
+//     display: flex;
+//     justify-content: space-around;
+//     position: relative;
+// }
+//
+// /* Style the buttons inside the tab */
+// div.tab button {
+//   height: 44px;
+//   width: 50%;
+//   background-color: $brand-primary;
+//   border: none;
+//   outline: none;
+//   cursor: pointer;
+//   transition: 0.3s;
+//   font-size: 18px;
+//   opacity: 0.3;
+// }
+//
+// /* Create an active/current tablink class */
+// div.tab button.active {
+//   opacity: 1;
+// }
+//
+// /* Style the tab content */
+// .tabcontent {
+//     display: none;
+//     padding: 6px 0px 6px 12px;
+//     // border: 1px solid $brand-primary;
+//     // border-left: none;
+//     // border-right: none;
+//     // border-bottom: none;
+// }
+
+// group cards
+.group {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.grouptext {
+  flex-grow: 1;
+}
+.Poppins:hover {
+  text-decoration: none;
+}
+
+.groupimages {
+  display: flex;
+  margin-top: 20px;
+  margin-right: 30px;
+  align-items: center;
+}
+.pic {
+  height: 44px;
+  width: 44px;
+}
+.solopic {
+  height: 88px;
+  width: 88px;
+}
+.pics-container {
+  border-radius: 8px;
+}
+.group-container {
+  padding: 10px;
+}
+.red {
+  color: red !important;
+}
+
+.green {
+  color: green;
+}
+
+.group-dynamic-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  border-radius: 2px;
+  width: 100%;
+  margin: 0px;
+  margin-bottom: 13px;
+  padding: 15px 25px;
+  line-height: 145%;
+  text-align: left;
+  width: 100%;
+}
+// This needs a class, its applying to other stuff
+h1 {
+  // background-color: $brand-primary;
+  padding: 10px;
+  color:white;
+}
+
+.group-content{
+  align-items: center;
+}
+
+
+.inverted-img img {
+  filter: invert(100%);
+}
+
+#brand-primary {
+  background-color: $brand-primary;
+}
+
+.button-placement {
+  margin-bottom: 20px 14px;
+  padding-bottom: 14px;
+}
+
+.group-dynamic-data {
+  margin: 0px;
+  padding: 7px 13px 3px 13px;
+}
+
+.group-card {
+  margin: 7px 7px 14px 7px;
+  background-color: white;
+}
+
+#mag-glass-spacer {
+  width: 10px;
+}
+
+#mag-glass-font {
+  font-size: 16px;
+}
+
+#group-member-img {
+  padding: 0px !important;
+  margin: 0px 0px !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+// .user-img {
+//   margin: 8px 8px;
+//   padding: 0px 3px;
+//   border-radius: 15% !important;
+// }
+
+#group-name {
+  font-weight: bolder;
+}
+
+.column {
+  width: 100%;
+}
+
+#group-creation-time {
+  margin: 0px;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rounded {
+  border-radius: 50% !important;
+}

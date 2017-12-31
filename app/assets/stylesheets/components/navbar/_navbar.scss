@@ -1,0 +1,68 @@
+.navbar {
+  min-height: 56px;
+}
+
+.navbar-background {
+  background-color: $green;
+}
+
+#burger-menu {
+  transition: all 0.4s;
+  animation-fill-mode: forwards;
+}
+
+#hidden-menu-1 {
+  transition: 0.5s;
+}
+
+.navbar-toggler-icon-rotated {
+  transform: rotate(90deg);
+  animation-fill-mode: forwards;
+}
+
+.navbar-no-margin {
+  margin-bottom: 0;
+}
+
+.navigation-link {
+}
+
+.navigation-link:active {
+  transform: scale(2);
+}
+
+.hidden-menu {
+  background-color: $green;
+  height: calc(100vh - 56px);
+  width: 0px;
+  position: fixed; /* Stay in place */
+    z-index: 1000; /* Stay on top */
+    top: 56; /* Stay at the top */
+    left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden-menu .navbar-nav {
+  display: none;
+}
+
+.hidden-menu-show {
+  // display: flex;
+  width: 100vw;
+  // opacity: 1;
+  // left: 0;
+}
+
+.hidden-menu-show .navbar-nav {
+  display: block;
+}
+
+// .content-hide {
+//   display: none;
+// }
+
+.nav-item {
+  margin: 20px 0;
+}

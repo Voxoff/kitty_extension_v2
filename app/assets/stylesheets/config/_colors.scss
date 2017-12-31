@@ -1,10 +1,41 @@
 // Define variables for your color scheme
+$fb-blue: #3B5998;
 
 // For example:
-$red: #EE5F5B;
-$blue: #469AE0;
-$yellow: #FDB631;
+$red: #C4183C;
+$blue: #0067F4;
+$info-blue: #00B8D8;
+$yellow: #FFB400;
 $orange: #E67E22;
-$green: #32B796;
-$gray: #000000;
-$light-gray: #F4F4F4;
+$green: #60D173;
+$gray: #5A6169;
+$light-gray: #E9ECEF;
+$dark-gray: #282828;
+$background: #FAFAFA;
+
+//#FAFAFA
+// Some color scheme classes
+
+.color-primary {
+  color: $green;
+}
+
+.color-danger {
+  color: $red;
+}
+
+.color-white {
+  color: white;
+}
+
+.bg-color-primary {
+  background-color: $green;
+}
+
+.bg-color-white {
+  background-color: white;
+}
+
+.bg-color-info {
+  background-color: $info-blue;
+}

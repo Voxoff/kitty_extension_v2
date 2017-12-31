@@ -6,20 +6,32 @@
 // General style
 $font-family-sans-serif:  $body-font;
 $headings-font-family:    $headers-font;
-$body-bg:                 $light-gray;
-$font-size-base: 18px;
+$body-bg:                 $background;
+$headings-color:          $dark-gray;
+$body-color:              $gray;
+$font-size-base:          1rem;
 
 // Colors
 $gray-base:       $gray;
-$brand-primary:   $blue;
+$brand-primary:   $green;
 $brand-success:   $green;
-$brand-info:      $yellow;
+$brand-info:      $info-blue;
+$brand-warning:   $yellow;
 $brand-danger:    $red;
-$brand-warning:   $orange;
+$brand-inverse:   $dark-gray;
 
 // Buttons & inputs' radius
-$border-radius-base:  2px;
-$border-radius-large: 2px;
-$border-radius-small: 2px;
+$border-radius-base:  2rem;
+$border-radius-large: 2rem;
+$border-radius-small: 2rem;
 
 // Override other variables below!
+
+// // Font colours
+a {
+  color: $gray;
+}
+
+a:hover {
+  color: $gray;
+}

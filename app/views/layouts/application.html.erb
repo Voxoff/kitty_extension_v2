@@ -35,10 +35,17 @@
 
   <body>
     <%= render 'shared/navbar' %>
+    <div id="content-container">
     <%= render 'shared/flashes' %>
     <%= yield %>
+    <% unless @hidebtn %>
+      <% if @group.kitty_created %>
+        <%= render 'shared/fixed_nav_btn' %>
+      <% end %>
+    <% end %>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_pack_tag 'application' %>
+    <%# javascript_pack_tag 'application' %>
     <%= yield(:after_js) %>
+    </div>
   </body>
 </html>

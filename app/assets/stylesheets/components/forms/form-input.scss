@@ -1,0 +1,84 @@
+.form-control {
+  padding: 0.664rem 0;
+  font-size: 1.1rem;
+  line-height: 1.125rem;
+  border: 0;
+  border-bottom: 1px solid #becad6;
+  font-weight: 300;
+  border-radius: 0;
+  transition: border-color 250ms cubic-bezier(0.27, 0.01, 0.38, 1.06), box-shadow 250ms cubic-bezier(0.27, 0.01, 0.38, 1.06);
+}
+
+.form-control:focus {
+  border-width: 2px;
+  border-color: $green;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #868e96;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #868e96;
+}
+
+.form-control::placeholder {
+  color: #868e96;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #f5f6f7;
+}
+
+.form-control:disabled:hover, .form-control[readonly]:hover {
+  cursor: not-allowed;
+}
+
+select.form-control:hover {
+  cursor: pointer;
+}
+
+.form-control-plaintext {
+  padding-top: 0.664rem;
+  padding-bottom: 0.664rem;
+  line-height: 1.1;
+  font-weight: 300;
+}
+
+.form-control-sm {
+  padding: 0.35rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+select.form-control-sm:not([size]):not([multiple]) {
+  height: calc(1.575rem + 2px);
+}
+
+.form-control-lg {
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+}
+
+select.form-control-lg:not([size]):not([multiple]) {
+  height: calc(2.5rem + 2px);
+}
+
+input:focus + label {
+    color: white;
+}
+
+.form-control.date {
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.form-control.select {
+  padding: 0;
+}
+
+.file.required {
+  border-bottom: 1px solid #becad6;
+}
