@@ -54,7 +54,47 @@ class GroupsController < ApplicationController
     # @nav_title = determine_navbar_title(@user_outstanding_with_group)
   end
 
-    private
+  def reminder
+    @title = "Send Reminder"
+    @hidebtn = false
+    @hidenav = false
+
+    @user = current_user
+    @group = current_group
+
+    @owes_you = group_members_that_owe_you(@user, @group)
+
+    if @owes_you.length == 0
+      render 'no_one_owes'
+    end
+  end
+
+  def no_one_owes
+    @title = "No one to remind"
+    @hidebtn = true
+    @hidenav = true
+
+    @user = current_user
+    @group = current_group
+  end
+
+  private
+
+  def group_members_that_owe_you(user, group)
+    owes_you = []
+    group.users.each do |member|
+      if member == @user
+      next
+      elsif @user.outstanding_with_person_overall(member) == 0
+      next
+      elsif @user.outstanding_with_person_overall(member) < 0
+      next
+      else
+        owes_you << member
+      end
+    end
+    return owes_you
+  end
 
   def outstanding_with_group(user_owes_splits, user_owed_splits)
     user_owes_total = 0

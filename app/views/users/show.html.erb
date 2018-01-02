@@ -1,4 +1,50 @@
-<h1>User Show</h1>
+<div class="profile-header text-center">
+  <%= image_tag @user.image, class: "avatar-profile-picture" %>
+  <h2 class="color-white"><%= @user.first_name %> <%= @user.last_name %></h2>
+  <h5 class="color-white"><%= @user.email %></h5>
+</div>
 
-<h2><%= @user.name %></h2>
-<h2><%= @group.name %></h2>
+<div class="container">
+  <div class="title-section">
+    <h3>Overview</h3>
+  </div>
+  <div class="card">
+    <div class="card-body text-center">
+      <% if @balance == 0 %>
+        <p class="mb-3">Across all groups, all square:</p>
+        <h4 class="no-margin">£0.00</h4>
+      <% elsif @balance > 0 %>
+        <p class="mb-3">Across all groups, owed:</p>
+        <h4 class="no-margin color-primary"><span class="color-primary">£<%= sprintf("%.2f", (@balance.to_f) / 100) %></span></h4>
+      <% else %>
+        <p class="mb-3">Across all groups, owe:</p>
+        <h4 class="no-margin color-danger"><span class="color-danger">£<%= sprintf("%.2f", (@balance.to_f) / 100  * -1) %></span></h4>
+      <% end %>
+    </div>
+  </div>
+  <div class="card-row-space"></div>
+
+  <div class="title-section">
+    <h3>Ratings</h3>
+  </div>
+  <div class="card">
+    <div class="card-body text-center">
+      <p class="mb-3">Stinginess Ratio:</p>
+      <h4 class="no-margin"><%= (@amount_lent.to_f/@amount_borrowed.to_f).round(2) %></h4>
+      <p class="no-margin under-avatar-text">(higher is less stingy...)</p>
+    </div>
+  </div>
+  <div class="card-row-space"></div>
+
+  <div class="title-section">
+    <h3>Profile Details</h3>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <p class="no-margin"><strong>Paypal:</strong> <%= @user.email %></p>
+      <hr>
+      <p class="no-margin"><strong>Joined On:</strong> <%= @user.created_at.strftime("%b %d, %Y") %></p>
+    </div>
+  </div>
+  <div class="card-row-space"></div>
+</div>

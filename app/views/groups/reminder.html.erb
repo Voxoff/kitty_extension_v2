@@ -1,0 +1,161 @@
+<!-- ##################################################################################################################### -->
+<!-- Who to Remind -->
+<!-- ##################################################################################################################### -->
+<div class="container">
+  <label class="input-form-label" for="first_name">Who should we remind?</label>
+  <div class="row">
+    <% @group.users.each do |member| %>
+    <% if member == @user %>
+    <% next %>
+    <% elsif @user.outstanding_with_person_overall(member) == 0 %>
+    <% next %>
+    <% elsif @user.outstanding_with_person_overall(member) < 0 %>
+    <% next %>
+    <% else %>
+    <div class="col-4">
+      <div class="user-selector-area text-center">
+        <%= image_tag member.profile_picture_url, class: "avatar-large avatar-new", data: { id: member.first_name, firstname: member.first_name, lastname: member.last_name, amountoutstanding: sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f / 100) } %>
+        <p class="under-avatar-text no-margin"><%= member.first_name %></p>
+        <p class="under-avatar-text">Owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f / 100) %></span></p>
+      </div>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+
+  <div class="fixed-btn-section submit-button">
+    <%= button_tag type: 'submit', class: "send-btn-primary d-flex align-center justify-center", id: "reminder-button" do %>
+      <p class="no-margin"><i class="fa fa-paper-plane fa-fw fa-lg mr-2 color-white" aria-hidden="true"></i>Send Reminder</p>
+    <% end %>
+  </div>
+
+</div>
+
+
+<!-- ##################################################################################################################### -->
+<!-- Javascript -->
+<!-- ##################################################################################################################### -->
+<% content_for(:after_js) do %>
+  <script>
+  // ###########################################################################################################
+  // Page Wide Variables:
+  // ###########################################################################################################
+    let avatars = document.querySelectorAll(".avatar-new");
+    let membersArray = [];
+    let amountOutstandingArray = [];
+    let message = {
+                  "attachment":{
+                    "type":"template",
+                    "payload":{
+                      "template_type":"generic",
+                      "elements": [{
+                        "title":"Demo",
+                        "subtitle": `Demo`,
+                        "buttons":[{
+                          "type":"web_url",
+                          "url":"<%= ENV['NGROK'] %>",
+                          "title":"Settle",
+                          "webview_height_ratio": "full",
+                          "messenger_extensions": true
+                        }]
+                      }]
+                    }
+                  }
+                };
+
+  // ###########################################################################################################
+  // Output Code
+  // ###########################################################################################################
+    // Update Array of Members Involved and Avatar Highlighting for New Expense
+      avatars.forEach((avatar) => {
+        avatar.addEventListener("click", () => {
+          membersArray = [];
+          amountOutstandingArray = [];
+          avatar.classList.toggle("avatar-highlighted");
+          alterMembersArray(membersArray);
+          alterAmountOutstandingArray(amountOutstandingArray);
+        })
+      })
+    // On click of send button, success and failure
+      document.querySelector("#reminder-button").addEventListener("click", () => {
+        if (document.querySelectorAll(".avatar-highlighted").length === 0) {
+          descriptionForFailedPeopleSelection();
+        }
+        else {
+          updateMessageTitle()
+          updateMessageSubtitle()
+          // Begin Facebook's Send to Group Flow
+          MessengerExtensions.beginShareFlow(function(share_response) {
+            // User dismissed without error, but did they share the message?
+            if(share_response.is_sent){
+              // The user actually did share.
+              // Perhaps close the window w/ requestCloseBrowser().
+              MessengerExtensions.requestCloseBrowser(function success() {
+                // webview closed if successful
+              }, function error(err) {
+                // if an error occurred, run no code
+              });
+            }
+          },
+          function(errorCode, errorMessage) {
+          // An error occurred in the process of sending message, do nothing
+          },
+          message,
+          "current_thread");
+          // End Facebook's Send to Group Flow
+        }
+      });
+  // ###########################################################################################################
+  // Supporter Functions
+  // ###########################################################################################################
+      function alterMembersArray(membersArray) {
+        avatars.forEach((avatar) => {
+          if (avatar.classList.contains("avatar-highlighted")) {
+            membersArray.push(`${avatar.dataset.firstname} ${avatar.dataset.lastname}`);
+          }
+        })
+        return membersArray;
+      }
+
+      function alterAmountOutstandingArray(amountOutstandingArray) {
+        avatars.forEach((avatar) => {
+          if (avatar.classList.contains("avatar-highlighted")) {
+            amountOutstandingArray.push(`${avatar.dataset.amountoutstanding}`);
+          }
+        })
+        return amountOutstandingArray;
+      }
+
+      function descriptionForFailedPeopleSelection() {
+        document.body.append("You haven't selected anyone!");
+        description.innerHTML = "";
+      }
+
+      function updateMessageTitle() {
+        if (document.querySelectorAll(".avatar-highlighted").length === 1 ) {
+          message["attachment"]["payload"]["elements"][0]["title"] = `REMINDER: @${membersArray[0]} - please pay back <%= @user.first_name %>`;
+        }
+        else if (document.querySelectorAll(".avatar-highlighted").length === 2) {
+          message["attachment"]["payload"]["elements"][0]["title"] = `REMINDER: @${membersArray[0]} and @${membersArray[1]} - You both still owe <%= @user.first_name %>`;
+        }
+        else if (document.querySelectorAll(".avatar-highlighted").length === <%= (@group.users.count.to_i - 1).to_s %>) {
+          message["attachment"]["payload"]["elements"][0]["title"] = `REMINDER: @Group - You all still owe <%= @user.first_name %>`;
+        }
+        else {
+          message["attachment"]["payload"]["elements"][0]["title"] = `REMINDER: @Group - Lots of you still owe <%= @user.first_name %>`;
+        }
+      }
+
+      function updateMessageSubtitle() {
+        if (membersArray.length === 1 ) {
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes <%= @user.first_name %> £${amountOutstandingArray[0]}`;
+        }
+        else if (membersArray.length === 2) {
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes £${amountOutstandingArray[0]} and ${membersArray[1]} owes £${amountOutstandingArray[1]}`;
+        }
+        else {
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `Overall, <%= @user.first_name %> is owed £<%= sprintf("%.2f", @user.outstanding_with_group(@group)).to_f / 100 %>`;
+        }
+      }
+  </script>
+<% end %>

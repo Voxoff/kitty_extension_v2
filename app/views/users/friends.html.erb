@@ -1,0 +1,59 @@
+<div class="container">
+<!-- You are owed section -->
+  <% unless @users_user_owed_by.empty? %>
+    <div class="title-section">
+      <h3>You are owed by</h3>
+    </div>
+    <% @users.each do |member| %>
+      <% if member == @user %>
+        <% next %>
+      <% elsif member.image.blank? %>
+        <% next %>
+      <% elsif @user.outstanding_with_person_overall(member) == 0 %>
+        <% next %>
+      <% elsif @user.outstanding_with_person_overall(member) > 0 %>
+        <div class="list-item-tall">
+          <div class="profile-img-container">
+            <%= image_tag member.image, class: "avatar-medium" %>
+          </div>
+          <div class="divider">
+            <div class="list-item-divider-content">
+              <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
+              <p class="list-item-text">Across all groups, owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f / 100) %></span></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="section-spacer"></div>
+  <% end %>
+
+
+<!-- You Owe Section -->
+  <% unless @users_user_owes.empty? %>
+    <div class="title-section">
+      <h3>You owe</h3>
+    </div>
+    <% @users.each do |member| %>
+      <% if member == @user %>
+        <% next %>
+      <% elsif member.image.blank? %>
+        <% next %>
+      <% elsif @user.outstanding_with_person_overall(member) == 0 %>
+        <% next %>
+      <% elsif @user.outstanding_with_person_overall(member) < 0 %>
+        <div class="list-item-tall">
+          <div class="profile-img-container">
+            <%= image_tag member.image, class: "avatar-medium" %>
+          </div>
+          <div class="divider">
+            <div class="list-item-divider-content">
+              <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
+              <p class="list-item-text" >Across all groups, you owe: <span class="color-danger"> £<%= sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f * -1 / 100) %></span></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
