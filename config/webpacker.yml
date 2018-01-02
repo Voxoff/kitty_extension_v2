@@ -1,7 +1,7 @@
 # Note: You must restart bin/webpack-dev-server for changes to take effect
 
 default: &default
-  source_path: javascript
+  source_path: app/javascript
   source_entry_path: packs
   public_output_path: packs
   cache_path: tmp/cache/webpacker
@@ -43,15 +43,8 @@ development:
     # Inline should be set to true if using HMR
     inline: true
     overlay: true
-    compress: true
     disable_host_check: true
     use_local_ip: false
-    quiet: false
-    headers:
-      'Access-Control-Allow-Origin': '*'
-    watch_options:
-      ignored: /node_modules/
-
 
 test:
   <<: *default
