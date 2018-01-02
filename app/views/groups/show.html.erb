@@ -60,7 +60,7 @@
 
 <div class="card-row-space"></div>
 
-<% if @user.sign_in_count == 1 %>
+<% if @user.first_sign_in %>
   <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
   <script>
   swal.setDefaults({
@@ -111,5 +111,6 @@
   }
   })
   </script>
-  <% @user.sign_in_count += 1 %>
+  <% @user.first_sign_in = false %>
+  <% @user.save %>
 <% end %>
