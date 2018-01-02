@@ -59,3 +59,56 @@
 </div>
 
 <div class="card-row-space"></div>
+
+<% if @user.sign_in_count == 1 %>
+  <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+  <script>
+  swal.setDefaults({
+  type: 'info',
+  confirmButtonText: 'Next &rarr;',
+  confirmButtonColor: '#00B8D8',
+  progressSteps: ['1', '2', '3', 'P.S']
+  })
+
+  var steps = [
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Welcome to Kitty, looks like its your first time</h3>',
+    text: "This is the home of your group chat's expenses and lending. Soon you will be able to pay people back too!"
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Add an expense</h3>',
+    text: "Down in the bottom right there is a button to add an expense or settle with someone. You can also send a reminder to people to pay you back."
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Keep on top of everything</h3>',
+    text: "Check your profile, your transactions and your outstanding lending with friends! Also, there is a little dashboard to show you exactly who and how much you owe or are owed. We even keep track of all the transactions you're involved in and have built you a stinginess ratio to show your friends who is best at lending money!"
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Kitty is in Beta</h3>',
+    text: 'Please help us by reporting any bugs you find'
+  },
+  ]
+
+  swal.queue(steps).then((result) => {
+  swal.resetDefaults()
+
+  if (result.value) {
+    swal({
+      position: 'top-right',
+      title: "<h3>That's everything for now. More coming soon!</h3>",
+      text: "We want to know what the next key features should be. Let us know at www.kittysplit.co.uk",
+      confirmButtonText: 'All Understood!',
+      confirmButtonColor: '#00B8D8'
+    })
+  }
+  })
+  </script>
+<% end %>

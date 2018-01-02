@@ -38,6 +38,25 @@ class UsersController < ApplicationController
     @users_user_owes = users_user_owes(@user, @users)
   end
 
+  def dashboard
+    @hidebtn = false
+    @hidenav = false
+    @tabs = ["Details", "Groups"]
+
+    @user = current_user
+    @group = current_group
+    @users = User.all
+
+    @expenses_paid = Expense.where(user_id: @user.id)
+    @amount_lent = amount_lent(@expenses_paid)
+    @splits_owed = Split.where(user_id: @user.id)
+    @amount_borrowed = amount_borrowed(@splits_owed)
+    @users_user_owed_by = users_user_owed_by(@user, @users)
+    @users_user_owes = users_user_owes(@user, @users)
+    @transactions = all_user_transactions(@user)
+    @balance = get_user_balance(@user)
+  end
+
   private
 
   def all_user_transactions(user)

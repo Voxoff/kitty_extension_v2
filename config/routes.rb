@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   get '/transactions/:id', to: 'users#transactions', as: 'user_transactions'
   get '/friends/:id', to: 'users#friends', as: 'user_friends'
+  get '/dashboard/:id', to: 'users#dashboard', as: 'user_dashboard'
 
   # EXPENSES CONTROLLERS
   resources :expenses, only: [:new, :create, :show]

@@ -1,0 +1,278 @@
+<!-- ########################################################################################## -->
+<!-- Create Tabs -->
+<!-- ########################################################################################## -->
+<%= render 'shared/tabs' %>
+<div class="mb-4"></div>
+
+<div id="FirstTab" class="tabcontent">
+  <div class="container">
+    <div class="title-section">
+      <h3>Overview</h3>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <% if @balance == 0 %>
+          <p class="mb-3">Across all groups, all square:</p>
+          <h4 class="no-margin">£0.00</h4>
+        <% elsif @balance > 0 %>
+          <p class="mb-3">Across all groups, owed:</p>
+          <h4 class="no-margin color-primary"><span class="color-primary">£<%= sprintf("%.2f", (@balance.to_f) / 100) %></span></h4>
+        <% else %>
+          <p class="mb-3">Across all groups, owe:</p>
+          <h4 class="no-margin color-danger"><span class="color-danger">£<%= sprintf("%.2f", (@balance.to_f) / 100  * -1) %></span></h4>
+        <% end %>
+      </div>
+    </div>
+    <div class="card-row-space"></div>
+
+    <div class="title-section">
+      <h3>Ratings</h3>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <p class="mb-3">Stinginess Ratio:</p>
+        <h4 class="no-margin"><%= (@amount_lent.to_f/@amount_borrowed.to_f).round(2) %></h4>
+        <p class="no-margin under-avatar-text">(higher is less stingy...)</p>
+      </div>
+    </div>
+    <div class="card-row-space"></div>
+
+    <div class="title-section">
+      <h3>Profile Details</h3>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <p class="no-margin"><strong>Number of Transactions:</strong> <%= @transactions.count %></p>
+        <hr>
+        <p><strong>Number of times lent:</strong> <%= @expenses_paid.count %></p>
+        <p class="no-margin"><strong>Amount lent:</strong> £<%= sprintf("%.2f", @amount_lent.to_f / 100) %></p>
+        <hr>
+        <p><strong>Number of times borrowed:</strong> <%= @splits_owed.count %></p>
+        <p class="no-margin"><strong>Amount borrowed:</strong> £<%= sprintf("%.2f", @amount_borrowed.to_f / 100) %></p>
+        <hr>
+        <p class="no-margin"><strong>Joined On:</strong> <%= @user.created_at.strftime("%b %d, %Y") %></p>
+      </div>
+    </div>
+    <div class="card-row-space"></div>
+  </div>
+</div>
+
+<div id="Groups" class="tabcontent" style="display: none;">
+  <div class="container">
+    <div class="title-section">
+      <h3>Your Groups</h3>
+    </div>
+  </div>
+
+  <% if @user.groups.empty? %>
+    <div class="container">
+      <div class="title-section">
+        <h5>You haven't joined any groups yet. Try opening Kitty in a group chat to get started!</h5>
+      </div>
+    </div>
+  <% else %>
+    <div class="container">
+    <% @user.groups.each do |group| %>
+        <% if group.closed? == true %>
+          <% next %>
+        <% elsif group.memberships.length == 1 %>
+          <!-- Group Card With Only One Member -->
+          <div class="card">
+            <div class="groups-card-img-top group-card-img-size" style="background-image: url(<%=group.users.first.image%>);"></div>
+            <div class="card-body">
+              <div class="title-flex">
+                <h4 class="card-title"><%= group.name.capitalize %></h4>
+                <button type="button" class="popover-info-btn ml-2 mb-2"> ? </button>
+              </div>
+              <% if @user.outstanding_with_group(group) == 0 %>
+                <p class="mb-1">All square in this group!</p>
+              <% elsif @user.outstanding_with_group(group) > 0 %>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", (@user.outstanding_with_group(group).to_f)/100) %></span></p>
+              <% else %>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+              <% end %>
+              <% i = 0 %>
+              <% group.users.each do |member| %>
+                <% if member.outstanding_with_group(group) == 0 %>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+              <div class="multiple-buttons">
+              <% if i == group.memberships.length %>
+                  <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                  <% end %> -->
+                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
+                  <% end %>
+              <% else %>
+                <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary no-margin"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                <% end %> -->
+                <button type="button" class="popover-info-btn ml-2"> ? </button>
+              <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-space"></div>
+        <% elsif group.memberships.length == 2 %>
+          <!-- Group with 2 Members -->
+          <div class="card">
+            <div class="groups-card-img-top group-card-img-size group-card-members-grid-2" style="background-image: url(https://placeholdit.co//i/550x350);">
+              <div class="group-card-members-grid-2-child" style="background-image: url(<%=group.users.first.image%>);"></div>
+              <div class="group-card-members-grid-2-child" style="background-image: url(<%=group.users.last.image%>);"></div>
+            </div>
+            <div class="card-body">
+              <div class="title-flex">
+                <h4 class="card-title"><%= group.name.capitalize %></h4>
+                <button type="button" class="popover-info-btn ml-2 mb-2"> ? </button>
+              </div>
+              <% if @user.outstanding_with_group(group) == 0 %>
+                <p class="mb-1">All square in this group!</p>
+              <% elsif @user.outstanding_with_group(group) > 0 %>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+              <% else %>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+              <% end %>
+              <% i = 0 %>
+              <% group.users.each do |member| %>
+                <% if member.outstanding_with_group(group) == 0 %>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+              <div class="multiple-buttons">
+              <% if i == group.memberships.length %>
+                  <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                  <% end %> -->
+                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
+                  <% end %>
+              <% else %>
+                <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary no-margin"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                <% end %> -->
+                <!-- <button type="button" class="popover-info-btn ml-2"> ? </button> -->
+              <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-space"></div>
+        <% elsif group.memberships.length == 3 %>
+          <!-- Group with 3 Members -->
+          <div class="card">
+            <div class="groups-card-img-top group-card-img-size group-card-members-grid-over2" style="background-image: url(https://placeholdit.co//i/550x350);">
+              <div class="group-card-members-grid-3-child-a" style="background-image: url(<%=group.users.first.image%>);"></div>
+              <div class="group-card-members-grid-3-child-b" style="background-image: url(<%=group.users[1].image%>);"></div>
+              <div class="group-card-members-grid-3-child-c" style="background-image: url(<%=group.users.last.image%>);"></div>
+            </div>
+            <div class="card-body">
+              <div class="title-flex">
+                <h4 class="card-title"><%= group.name.capitalize %></h4>
+                <button type="button" class="popover-info-btn ml-2 mb-2"> ? </button>
+              </div>
+              <% if @user.outstanding_with_group(group) == 0 %>
+                <p class="mb-1">All square in this group!</p>
+              <% elsif @user.outstanding_with_group(group) > 0 %>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+              <% else %>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+              <% end %>
+              <% i = 0 %>
+              <% group.users.each do |member| %>
+                <% if member.outstanding_with_group(group) == 0 %>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+              <div class="multiple-buttons">
+              <% if i == group.memberships.length %>
+                  <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                  <% end %> -->
+                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
+                  <% end %>
+              <% else %>
+                <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary no-margin"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                <% end %> -->
+                <!-- <button type="button" class="popover-info-btn ml-2"> ? </button> -->
+              <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-space"></div>
+        <% else %>
+          <!-- Group with 4+ Members -->
+          <div class="card">
+            <div class="groups-card-img-top group-card-img-size group-card-members-grid-over2" style="background-image: url(https://placeholdit.co//i/550x350);">
+              <div class="group-card-members-grid-4-child-a" style="background-image: url(<%=group.users[0].image%>);"></div>
+              <div class="group-card-members-grid-4-child-b" style="background-image: url(<%=group.users[1].image%>);"></div>
+              <div class="group-card-members-grid-4-child-c" style="background-image: url(<%=group.users[2].image%>);"></div>
+              <div class="group-card-members-grid-4-child-d" style="background-image: url(<%=group.users[3].image%>);"></div>
+            </div>
+            <div class="card-body">
+              <div class="title-flex">
+                <h4 class="card-title"><%= group.name.capitalize %></h4>
+                <button type="button" class="popover-info-btn ml-2 mb-2"> ? </button>
+              </div>
+              <% if @user.outstanding_with_group(group) == 0 %>
+                <p class="mb-1">All square in this group!</p>
+              <% elsif @user.outstanding_with_group(group) > 0 %>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+              <% else %>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+              <% end %>
+              <% i = 0 %>
+              <% group.users.each do |member| %>
+                <% if member.outstanding_with_group(group) == 0 %>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+              <div class="multiple-buttons">
+              <% if i == group.memberships.length %>
+                  <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                  <% end %> -->
+                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
+                  <% end %>
+              <% else %>
+                <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
+                  <p class="btn btn-filled-primary no-margin"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
+                <% end %> -->
+                <!-- <button type="button" class="popover-info-btn ml-2"> ? </button> -->
+              <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-space"></div>
+        <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% content_for(:after_js) do %>
+  <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+  <script>
+    function groupDeleteMoreInfo() {
+      const popovers = document.querySelectorAll(".popover-info-btn")
+      popovers.forEach((popoverBtn) => {
+        popoverBtn.addEventListener("click", () => {
+          swal({
+            position: 'top-right',
+            type: 'info',
+            title: '<h3> Want to delete a group? </h3>',
+            text: "A kitty can only be closed when there are no remaining outstanding payments",
+            showConfirmButton: true,
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
+            confirmButtonColor: '#00B8D8',
+            timer: 4000
+          })
+        })
+      })
+    }
+    groupDeleteMoreInfo()
+  </script>
+<% end %>
