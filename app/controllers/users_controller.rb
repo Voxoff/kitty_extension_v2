@@ -36,6 +36,10 @@ class UsersController < ApplicationController
 
     @users_user_owed_by = users_user_owed_by(@user, @users)
     @users_user_owes = users_user_owes(@user, @users)
+
+    if @users_user_owed_by.length == 0 && @users_user_owes.length == 0
+      render 'owes_and_owed_by_no_one'
+    end
   end
 
   def dashboard
