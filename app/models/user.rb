@@ -40,15 +40,14 @@ class User < ApplicationRecord
     user_owed_total = 0
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_cents
+      user_owed_total += split.amount_pennies
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_cents
+      user_owes_total += split.amount_pennies
     end
 
     return user_owed_total - user_owes_total
-
   end
 
   def outstanding_with_person_overall(comparison_user)
@@ -59,11 +58,11 @@ class User < ApplicationRecord
     user_owed_total = 0
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_cents
+      user_owed_total += split.amount_pennies
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_cents
+      user_owes_total += split.amount_pennies
     end
 
     return user_owed_total - user_owes_total
@@ -77,11 +76,11 @@ class User < ApplicationRecord
     user_owed_total = 0
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_cents
+      user_owed_total += split.amount_pennies
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_cents
+      user_owes_total += split.amount_pennies
     end
 
     return user_owed_total - user_owes_total

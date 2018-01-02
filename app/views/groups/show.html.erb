@@ -15,13 +15,13 @@
       <div class="divider">
         <div class="list-item-divider-content">
           <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
-          <%# if @user.outstanding_with_person_in_group(member, @group) == 0 %>
+          <% if @user.outstanding_with_person_in_group(member, @group) == 0 %>
             <p class="list-item-text" >You're all square</p>
-          <%# elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
-            <!-- <p class="list-item-text" >You owe: <span class="color-danger"> £<%# sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f * -1 / 100) %></span></p> -->
-          <% #else %>
-            <!-- <p class="list-item-text">Owes you: <span class="color-primary">£<%# sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f / 100) %></span></p> -->
-          <%# end %>
+          <% elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
+            <p class="list-item-text" >You owe: <span class="color-danger"> £<%= sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f * -1 / 100) %></span></p>
+          <% else %>
+            <p class="list-item-text">Owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f / 100) %></span></p>
+          <% end %>
         </div>
       </div>
     </div>

@@ -94,9 +94,9 @@
 
     <!-- Input Button (to be removed) -->
   </div>
-    <div class="fixed-btn-section">
-      <%= button_tag type: 'submit', class: "send-btn-primary d-flex align-center justify-center" do %>
-      <p class="no-margin"><i class="fa fa-plus fa-fw fa-lg mr-2 color-white" aria-hidden="true"></i>Add Expense</p>
+    <div class="fixed-btn-section submit-button">
+      <%= button_tag type: 'submit', class: "send-btn-primary d-flex align-center justify-center", id: "add-button" do %>
+        <p class="no-margin"><i class="fa fa-plus fa-fw fa-lg mr-2 color-white" aria-hidden="true"></i>Add Expense</p>
       <% end %>
       <!-- Simple Form End -->
       <% end %>
@@ -107,9 +107,70 @@
 <!-- Settle Expense -->
 <!-- ########################################################################################## -->
 <div id="Settle" class="tabcontent" style="display: none;">
-  <div class="container">
-    <h2><%= @group.name %></h2>
-  </div>
+  <% if @group.users.length == @owed_array.length %>
+    <div class="container">
+      <h5>Look's like you don't owe anyone at the moment - good work!</h5>
+    </div>
+  <% else %>
+    <div class="container">
+      <!-- Pay Back Person Selector -->
+      <label class="input-form-label" for="first_name">Who do you want to settle with?</label>
+      <% if @group.users.length <= 5 %>
+        <div class="row">
+          <% @group.users.each do |member| %>
+            <% next if member == @user || @user.outstanding_with_person_in_group(member, @group) > 0 %>
+            <div class="col">
+              <div class="user-selector-area text-center">
+                <%= image_tag member.image, class: "avatar-large avatar-settle", data: { id: member.id } %>
+                <p class="under-avatar-text"><%= member.first_name %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="testimonial-group side-scroller-base">
+          <div class="row">
+            <% @group.users.each do |member| %>
+              <% next if member == @user || @user.outstanding_with_person_in_group(member, @group) > 0 %>
+              <div class="col-3">
+                <div class="user-selector-area text-center">
+                  <%= image_tag member.image, class: "avatar-large avatar-settle", data: { id: member.id } %>
+                  <p class="under-avatar-text"><%= member.first_name %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="container">
+      <%= simple_form_for [ @expense ] do |f| %>
+        <!-- Choose Amount to Settle -->
+        <label class="input-form-label" for="payment_method">How did you pay? (required)</label>
+        <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
+        <label class="input-form-label" for="amount_cents">How much? (required)</label>
+        <div class="d-flex align-center">
+          <h3 class="mr-4">£</h3>
+          <%= f.input :amount_pennies, :type => String, input_html: { id: "settle-amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
+        </div>
+
+        <%= f.hidden_field :title, value: "#{@user.first_name} settled up" %>
+        <%= f.hidden_field :description, value: "Settled" %>
+        <%= f.hidden_field :user_id, value: @user.id %>
+        <%= f.input :settle_group, as: :hidden, input_html: { value: "", id: "settle_group_field" } %>
+        <!-- <%= f.input :to_pay_id, as: :hidden, input_html: { value: "", id: "to_pay_field" } %> -->
+        <%= f.hidden_field :location, value: "" %>
+        <%= f.hidden_field :group_id, value: @group.id %>
+    </div>
+      <div class="fixed-btn-section submit-button">
+        <%= button_tag type: 'submit', class: "send-btn-primary d-flex align-center justify-center", id: "settle-button" do %>
+          <p class="no-margin"><i class="fa fa-check fa-fw fa-lg mr-2 color-white" aria-hidden="true"></i>Settle Up</p>
+        <% end %>
+      </div>
+      <!-- Simple Form End -->
+      <% end %>
+  <% end %>
+
 </div>
 
 <!-- ########################################################################################## -->
@@ -117,6 +178,18 @@
 <!-- ########################################################################################## -->
 <% content_for(:after_js) do %>
   <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+
+  <!-- Including the Facebook Extension SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.com/en_GB/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+  </script>
+
   <script>
   // ###########################################################################################################
   // Page Wide Variables:
@@ -186,7 +259,7 @@
     })
 
   // On click of send button, success and failure
-    document.querySelector(".navbar-tick-btn").addEventListener("click", () => {
+    document.querySelector("#add-button").addEventListener("click", () => {
       if (document.getElementById("involved_group_field").value === "" || document.getElementById("involved_group_field").value === ["<%= @user.id %>"]) {
         descriptionForFailedPeopleSelection();
       }
@@ -194,16 +267,7 @@
         updateMessageSubtitleWithTitleAndAmount()
         // Begin Facebook's Send to Group Flow
         MessengerExtensions.beginShareFlow(function(share_response) {
-          // User dismissed without error, but did they share the message?
-          // if(share_response.is_sent){
-          //   // The user actually did share.
-          //   // Perhaps close the window w/ requestCloseBrowser().
-          //   MessengerExtensions.requestCloseBrowser(function success() {
-          //     // webview closed if successful
-          //   }, function error(err) {
-          //     // if an error occurred, run no code
-          //   });
-          // }
+
         },
         function(errorCode, errorMessage) {
         // An error occurred in the process of sending message, do nothing
@@ -211,16 +275,63 @@
         message,
         "current_thread");
         // End Facebook's Send to Group Flow
-        swal({
-          position: 'top-right',
-          type: 'success',
-          title: '<h3> Expense created! </h3>',
-          showConfirmButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
-          confirmButtonColor: '#00B8D8',
-        })
+        // swal({
+        //   position: 'top-right',
+        //   type: 'success',
+        //   title: '<h3> Expense created! </h3>',
+        //   showConfirmButton: true,
+        //   confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
+        //   confirmButtonColor: '#00B8D8',
+        // })
       }
     });
+
+    // On click of send button, success and failure
+      document.querySelector("#settle-button").addEventListener("click", () => {
+        if (document.getElementById("settle_group_field").value === "" || document.getElementById("settle_group_field").value === ["<%= @user.id %>"]) {
+          descriptionForFailedPeopleSelection();
+        }
+        else {
+          let amount = document.getElementById('settle-amount')
+          let message = {
+                      "attachment":{
+                        "type":"template",
+                        "payload":{
+                          "template_type":"generic",
+                          "elements": [{
+                            "title":"<%= @user.first_name %> just settled an expense in your Kitty!",
+                            "subtitle": `They paid back £${amount.value}`,
+                            "buttons":[{
+                              "type":"web_url",
+                              "url":"<%= ENV['NGROK'] %>",
+                              "title":"View group",
+                              "webview_height_ratio": "full",
+                              "messenger_extensions": true
+                            }]
+                          }]
+                        }
+                      }
+                    };
+          // Begin Facebook's Send to Group Flow
+          MessengerExtensions.beginShareFlow(function(share_response) {
+
+          },
+          function(errorCode, errorMessage) {
+          // An error occurred in the process of sending message, do nothing
+          },
+          message,
+          "current_thread");
+          // End Facebook's Send to Group Flow
+          // swal({
+          //   position: 'top-right',
+          //   type: 'success',
+          //   title: '<h3> Expense created! </h3>',
+          //   showConfirmButton: true,
+          //   confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
+          //   confirmButtonColor: '#00B8D8',
+          // })
+        }
+      });
 
   // ###########################################################################################################
   // Supporter Functions

@@ -1,12 +1,7 @@
-<!-- Defining page title -->
-<% if @expense.description == "Settled" %>
-  <% @title = "Settle Breakdown" %>
-<% else %>
-  <% @title = "Expense Breakdown" %>
-<% end %>
-
+<!-- Spacer from Navbar -->
 <div class="mb-4"></div>
 
+<!-- Title Section -->
 <div class="container">
   <% if @expense.description == "Settled" %>
     <div class="title-section">
@@ -18,6 +13,7 @@
     </div>
   <% end %>
 
+<!-- Lending Section -->
   <hr>
   <% if @expense.description == "Settled" %>
     <div class="list-item-tall">
@@ -52,16 +48,33 @@
     <% end %>
   <% end %>
 
+<!-- Details Section -->
   <div class="title-section">
     <h4 class="no-margin">Details</h4>
   </div>
-
-  <div class="card">
-    <div class="card-body text-center">
-        <p class="no-margin">Total:</p>
-        <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
+  <% if @expense.description == "Settled" %>
+    <div class="card">
+      <div class="card-body text-center d-flex align-center">
+        <div>
+          <p class="no-margin">Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
+        </div>
+      </div>
     </div>
-  </div>
+  <% else %>
+    <div class="card">
+      <div class="card-body text-center d-flex align-center">
+        <div>
+          <p class="no-margin">Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
+        </div>
+        <div>
+          <p class="no-margin">Total Lent:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @total_lent %> </h4>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <div class="card-row-space"></div>
 

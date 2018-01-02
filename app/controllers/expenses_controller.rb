@@ -9,6 +9,8 @@ class ExpensesController < ApplicationController
     @expense = Expense.new
     @expense.amount_pennies = nil
 
+    @owed_array = to_be_settled_with(@group)
+
   end
 
   def create
@@ -54,9 +56,28 @@ class ExpensesController < ApplicationController
     @user = current_user
     @group = current_group
     @title = expense_show_title(@expense)
+    @total_lent = total_lent(@expense)
   end
 
   private
+
+  def to_be_settled_with(group)
+    owed_array = []
+    group.users.each do |member|
+      if member == @user || @user.outstanding_with_person_in_group(member, @group) > 0
+        owed_array << member
+      end
+    end
+    return owed_array
+  end
+
+  def total_lent(expense)
+    total_amount = Money.new(0, 'GBP')
+    expense.splits.each do |split|
+      total_amount += split.amount
+    end
+    return total_amount
+  end
 
   def expense_show_title(expense)
     if expense.description == "Settled"

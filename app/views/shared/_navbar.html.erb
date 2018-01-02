@@ -16,18 +16,22 @@
             <h4 class="color-white small-padding"><i class="fa fa-users fa-fw color-white mr-2" aria-hidden="true"></i>Current Group</h4>
           </li>
         <% end %>
-        <li class="nav-item">
-          <h4 class="color-white small-padding"><i class="fa fa-exchange fa-fw color-white mr-2" aria-hidden="true"></i>Transactions</h4>
-        </li>
+        <%= link_to user_transactions_path(@user) do %>
+          <li class="nav-item">
+            <h4 class="color-white small-padding"><i class="fa fa-exchange fa-fw color-white mr-2" aria-hidden="true"></i>Transactions</h4>
+          </li>
+        <% end %>
         <li class="nav-item">
           <h4 class="color-white small-padding"><i class="fa fa-dashboard fa-fw color-white mr-2" aria-hidden="true"></i>Dashboard</h4>
         </li>
-        <li class="nav-item">
-          <h4 class="color-white small-padding"><i class="fa fa-user fa-fw color-white mr-2" aria-hidden="true"></i>Profile</h4>
-        </li>
-        <li class="nav-item">
+        <%= link_to user_path(@user) do %>
+          <li class="nav-item">
+            <h4 class="color-white small-padding"><i class="fa fa-user fa-fw color-white mr-2" aria-hidden="true"></i>Profile</h4>
+          </li>
+        <% end %>
+        <!-- <li class="nav-item">
           <h4 class="color-white small-padding"><i class="fa fa-bug fa-fw color-white mr-2" aria-hidden="true"></i>Report a bug</h4>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
