@@ -17,7 +17,7 @@ class PagesController < ApplicationController
   def redirect
     @hidebtn = true
     @hidenav = true
-    
+
     @user = current_user
     @group = Group.find_by(tid: params[:tid])
 

@@ -29,3 +29,33 @@
 </div>
 
 <div class="section-spacer"></div>
+
+<!-- SECTION TO SHOW EXPENSES -->
+<div class="container">
+  <div class="title-section">
+    <h3>Recent Expenses</h3>
+  </div>
+</div>
+
+<div class="container">
+  <% if @group.expenses.empty? %>
+    <h5>No expenses yet. Press the plus to add one!</h5>
+  <% else %>
+    <% @group.expenses.reverse.first(5).each do |expense| %>
+      <%= link_to expense_path(expense) do %>
+        <div class="list-item-short">
+          <div class="divider">
+            <div class="list-item-divider-content .align-baseline">
+              <p class="list-item-text" ><%= expense.title %></p>
+            </div>
+            <div class="list-item-arrow-btn .align-baseline">
+                <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="card-row-space"></div>

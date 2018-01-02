@@ -32,7 +32,7 @@ class GroupsController < ApplicationController
   def show
     @hidebtn = false
     @hidenav = false
-    
+
     @nav_title = "You're all square"
 
     @user = current_user

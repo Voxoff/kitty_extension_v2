@@ -10,13 +10,13 @@
 <div class="container">
   <% if @expense.description == "Settled" %>
     <div class="title-section">
-      <h3 class="no-margin"><%= @expense.user.first_name %> paid back £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %></h4>
+      <h3 class="no-margin"><%= @expense.user.first_name %> paid back <%= @expense.splits.first.user.first_name %></h4>
     </div>
-    <% else %>
+  <% else %>
     <div class="title-section">
-      <h3 class="no-margin"><%= @expense.user.first_name %> paid £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %> for <%= @expense.title %></h4>
+      <h3 class="no-margin"><%= @expense.user.first_name %> paid for <%= @expense.title %></h4>
     </div>
-    <% end %>
+  <% end %>
 
   <hr>
   <% if @expense.description == "Settled" %>
@@ -58,6 +58,15 @@
 
   <div class="card">
     <div class="card-body text-center">
+        <p class="no-margin">Total:</p>
+        <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
+    </div>
+  </div>
+
+  <div class="card-row-space"></div>
+
+  <div class="card">
+    <div class="card-body text-center">
         <p class="no-margin">Kitty:</p>
         <h4 class="no-margin"> <%= @expense.group.name %> </h4>
     </div>
@@ -80,5 +89,7 @@
       <% end %>
     </div>
   </div>
+
+  <div class="card-row-space"></div>
 
 </div>
