@@ -16,14 +16,14 @@
             <h4 class="color-white small-padding"><i class="fa fa-users fa-fw color-white mr-2" aria-hidden="true"></i>Current Group</h4>
           </li>
         <% end %>
+        <%= link_to user_friends_path(@user) do %>
+        <li class="nav-item">
+          <h4 class="color-white small-padding"><i class="fa fa-group fa-fw color-white mr-2" aria-hidden="true"></i>Friends</h4>
+        </li>
+        <% end %>
         <%= link_to user_transactions_path(@user) do %>
           <li class="nav-item">
             <h4 class="color-white small-padding"><i class="fa fa-exchange fa-fw color-white mr-2" aria-hidden="true"></i>Transactions</h4>
-          </li>
-        <% end %>
-        <%= link_to user_friends_path(@user) do %>
-          <li class="nav-item">
-            <h4 class="color-white small-padding"><i class="fa fa-group fa-fw color-white mr-2" aria-hidden="true"></i>Friends</h4>
           </li>
         <% end %>
         <%= link_to user_dashboard_path(@user) do %>
