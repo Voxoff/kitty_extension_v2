@@ -1,0 +1,84 @@
+<!-- Defining page title -->
+<% if @expense.description == "Settled" %>
+  <% @title = "Settle Breakdown" %>
+<% else %>
+  <% @title = "Expense Breakdown" %>
+<% end %>
+
+<div class="mb-4"></div>
+
+<div class="container">
+  <% if @expense.description == "Settled" %>
+    <div class="title-section">
+      <h3 class="no-margin"><%= @expense.user.first_name %> paid back £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %></h4>
+    </div>
+    <% else %>
+    <div class="title-section">
+      <h3 class="no-margin"><%= @expense.user.first_name %> paid £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %> for <%= @expense.title %></h4>
+    </div>
+    <% end %>
+
+  <hr>
+  <% if @expense.description == "Settled" %>
+    <div class="list-item-tall">
+      <div class="profile-img-container mr-4">
+        <%= image_tag @expense.user.image, class: "avatar-medium" %>
+      </div>
+      <div class="arrow-right-container text-center">
+        <p class="under-avatar-text no-margin">Paid Back: £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %></p>
+        <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
+        <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
+      </div>
+      <div class="profile-img-container ml-4">
+        <%= image_tag @expense.splits.first.user.image, class: "avatar-medium" %>
+      </div>
+    </div>
+  <% else %>
+    <% @expense.splits.each do |split| %>
+    <div class="list-item-tall">
+      <div class="profile-img-container mr-4">
+        <%= image_tag @expense.user.image, class: "avatar-medium" %>
+      </div>
+      <div class="arrow-right-container text-center">
+        <p class="under-avatar-text no-margin">Lent: £<%= sprintf("%.2f", (split.amount_pennies.to_f / 100)) %></p>
+        <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
+        <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
+      </div>
+      <div class="profile-img-container ml-4">
+        <%= image_tag split.user.image, class: "avatar-medium" %>
+      </div>
+    </div>
+    <hr>
+    <% end %>
+  <% end %>
+
+  <div class="title-section">
+    <h4 class="no-margin">Details</h4>
+  </div>
+
+  <div class="card">
+    <div class="card-body text-center">
+        <p class="no-margin">Kitty:</p>
+        <h4 class="no-margin"> <%= @expense.group.name %> </h4>
+    </div>
+  </div>
+
+  <div class="card-row-space"></div>
+
+  <div class="card">
+    <div class="card-body">
+      <% unless @expense.location == "" %>
+        <p class="no-margin">Paid at: <%= @expense.location %></p>
+      <% end %>
+      <hr>
+      <% unless @expense.payment_method == "" %>
+        <p class="no-margin">Paid by: <%= @expense.payment_method.capitalize %></p>
+      <% end %>
+      <hr>
+      <% unless @expense.description == "" || @expense.description == "Settled" %>
+        <p class="no-margin">Description: <%= @expense.description %></p>
+      <% end %>
+    </div>
+  </div>
+
+</div>

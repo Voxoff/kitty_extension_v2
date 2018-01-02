@@ -1,33 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-dark navbar-background">
-  <!-- Links directly in navbar -->
-  <h3 class="navbar-brand no-margin" href="#"><%= @nav_title %></h3>
-  <a class="navbar-toggler collapsed no-border no-padding" data-toggle="collapse" data-target="#navbarNavDropdown-1" aria-controls="navbarNavDropdown-1" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fa fa-bars fa-lg color-white" id="burger-menu" aria-hidden="true"></i>
-  </a>
+<% unless @hidenav %>
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-background">
+    <!-- Links directly in navbar -->
+    <h3 class="navbar-brand no-margin" href="#"><%= @nav_title %></h3>
+    <a class="navbar-toggler collapsed no-border no-padding" data-toggle="collapse" data-target="#navbarNavDropdown-1" aria-controls="navbarNavDropdown-1" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa fa-bars fa-lg color-white" id="burger-menu" aria-hidden="true"></i>
+    </a>
 
-</nav>
-<!-- Menu that opens on burger touch -->
-<div class="hidden-menu" id="hidden-menu-1" style="">
-  <div class="container">
-    <ul class="navbar-nav mr-auto text-center">
-      <li class="nav-item">
-        <h4 class="color-white small-padding"><i class="fa fa-users fa-fw color-white mr-2" aria-hidden="true"></i>Current Group</h4>
-      </li>
-      <li class="nav-item">
-        <h4 class="color-white small-padding"><i class="fa fa-exchange fa-fw color-white mr-2" aria-hidden="true"></i>Transactions</h4>
-      </li>
-      <li class="nav-item">
-        <h4 class="color-white small-padding"><i class="fa fa-dashboard fa-fw color-white mr-2" aria-hidden="true"></i>Dashboard</h4>
-      </li>
-      <li class="nav-item">
-        <h4 class="color-white small-padding"><i class="fa fa-user fa-fw color-white mr-2" aria-hidden="true"></i>Profile</h4>
-      </li>
-      <li class="nav-item">
-        <h4 class="color-white small-padding"><i class="fa fa-bug fa-fw color-white mr-2" aria-hidden="true"></i>Report a bug</h4>
-      </li>
-    </ul>
+  </nav>
+  <!-- Menu that opens on burger touch -->
+  <div class="hidden-menu" id="hidden-menu-1" style="">
+    <div class="container">
+      <ul class="navbar-nav mr-auto text-center">
+        <%= link_to group_path(@group) do %>
+          <li class="nav-item">
+            <h4 class="color-white small-padding"><i class="fa fa-users fa-fw color-white mr-2" aria-hidden="true"></i>Current Group</h4>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <h4 class="color-white small-padding"><i class="fa fa-exchange fa-fw color-white mr-2" aria-hidden="true"></i>Transactions</h4>
+        </li>
+        <li class="nav-item">
+          <h4 class="color-white small-padding"><i class="fa fa-dashboard fa-fw color-white mr-2" aria-hidden="true"></i>Dashboard</h4>
+        </li>
+        <li class="nav-item">
+          <h4 class="color-white small-padding"><i class="fa fa-user fa-fw color-white mr-2" aria-hidden="true"></i>Profile</h4>
+        </li>
+        <li class="nav-item">
+          <h4 class="color-white small-padding"><i class="fa fa-bug fa-fw color-white mr-2" aria-hidden="true"></i>Report a bug</h4>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
+
+<% else %>
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-background">
+    <h3 class="navbar-brand no-margin" href="#"><%= @nav_title %></h3>
+    <i class="fa fa-bars fa-lg color-white" aria-hidden="true"></i>
+  </nav>
+
+<% end %>
+
 
 <% content_for(:after_js) do %>
   <script>

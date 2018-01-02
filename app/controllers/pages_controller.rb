@@ -3,15 +3,21 @@ class PagesController < ApplicationController
 
   def home
     @hidebtn = true
+    @hidenav = true
+
   end
 
   def call_facebook
     @hidebtn = true
+    @hidenav = true
+
     @user = current_user
   end
 
   def redirect
     @hidebtn = true
+    @hidenav = true
+    
     @user = current_user
     @group = Group.find_by(tid: params[:tid])
 

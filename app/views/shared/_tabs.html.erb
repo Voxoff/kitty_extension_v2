@@ -1,0 +1,45 @@
+<!-- ##################################################################################################################### -->
+<!-- Tabs Bar -->
+<!-- ##################################################################################################################### -->
+<div class="tab">
+  <button class="tablinks" id="firsttab" onclick="openCity(event, 'FirstTab')"><%= @tabs[0] %></button>
+  <% @tabs.each_with_index do |tab, index| %>
+    <% if index != 0 %>
+    <button class="tablinks" onclick="openCity(event, '<%= tab %>')"><%= tab %></button>
+    <% end %>
+  <% end %>
+</div>
+
+<% content_for(:after_js) do %>
+  <script>
+    const firstTab = document.getElementById("FirstTab");
+    const firsttab = document.getElementById("firsttab")
+    const tablinks = document.getElementsByClassName("tablinks");
+
+    // Tabs Selector
+    // Display first tab initially:
+    firstTab.style.display = "block";
+    firsttab.className += " active";
+    // Change Navbar Title as Tabs Change
+    tablinks[0].addEventListener("click", () => {
+      // document.querySelector(".navbar-brand").innerHTML = "Add an expense"
+    })
+    tablinks[1].addEventListener("click", () => {
+      // document.querySelector(".navbar-brand").innerHTML = "Settle an expense"
+    })
+    // Change Displayed Tab as Tabs Change
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+          tablinks = document.getElementsByClassName("tablinks");
+      }
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+<% end %>

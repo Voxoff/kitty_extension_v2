@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   def new_kitty
     @hidebtn = true
+    @hidenav = true
     @user = current_user
     @group = current_group
     @group.name = nil
@@ -9,6 +10,8 @@ class GroupsController < ApplicationController
 
   def update
     @hidebtn = true
+    @hidenav = true
+
     @user = current_user
     @group = current_group
     @group.name = params[:group][:name]
@@ -23,16 +26,22 @@ class GroupsController < ApplicationController
 
   def empty_group
     @hidebtn = true
+    @hidenav = true
   end
 
   def show
     @hidebtn = false
+    @hidenav = false
+    
+    @nav_title = "You're all square"
+
     @user = current_user
     @user.save
 
     @group = current_group
     @group.kitty_created = true
     @group.save
+    @title = @group.name
 
     if @group.users.length == 1
       @hidebtn = true

@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   get '/transactions/:id', to: 'users#transactions', as: 'user_transactions'
 
+  # EXPENSES CONTROLLERS
+  resources :expenses, only: [:new, :create, :show]
+
   # WEBHOOKS CONTROLLER
   get 'webhooks', to: 'webhooks#messenger'
   post 'webhooks', to: 'webhooks#messenger_receive_message'

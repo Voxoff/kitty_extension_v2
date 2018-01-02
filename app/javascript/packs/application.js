@@ -11,7 +11,6 @@ console.log("Hi from webpack")
 // import Rails from 'rails-ujs';
 // import Turbolinks from 'turbolinks';
 
-
 console.log("Hi from bottom of webpack")
 
 // Rails.start();

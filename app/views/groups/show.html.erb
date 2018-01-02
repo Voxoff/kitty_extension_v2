@@ -1,1 +1,31 @@
-<h1>Group Show Page</h1>
+<!-- Members Title -->
+<div class="container">
+  <div class="title-section">
+    <h3>Members</h3>
+  </div>
+</div>
+
+<div class="container">
+  <% @group.users.each do |member| %>
+    <% next if member == @user %>
+    <div class="list-item-tall">
+      <div class="profile-img-container">
+        <%= image_tag member.image, class: "avatar-medium" %>
+      </div>
+      <div class="divider">
+        <div class="list-item-divider-content">
+          <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
+          <%# if @user.outstanding_with_person_in_group(member, @group) == 0 %>
+            <p class="list-item-text" >You're all square</p>
+          <%# elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
+            <!-- <p class="list-item-text" >You owe: <span class="color-danger"> £<%# sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f * -1 / 100) %></span></p> -->
+          <% #else %>
+            <!-- <p class="list-item-text">Owes you: <span class="color-primary">£<%# sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f / 100) %></span></p> -->
+          <%# end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="section-spacer"></div>

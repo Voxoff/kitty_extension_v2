@@ -1,0 +1,294 @@
+<!-- ########################################################################################## -->
+<!-- Create Tabs -->
+<!-- ########################################################################################## -->
+<%= render 'shared/tabs' %>
+<div class="mb-4"></div>
+
+<!-- ########################################################################################## -->
+<!-- Add Expense -->
+<!-- ########################################################################################## -->
+<div id="FirstTab" class="tabcontent">
+  <div class="container">
+    <%= simple_form_for [ @expense ] do |f| %>
+
+    <!-- Title New Expense -->
+    <% payment_title_arr = ["Sunday Lunch", "British Gas", "Beers for the Boys", "Cinema and Crisps", "Pizza", "Council Tax", "Cheeky Nandos", "House Bills"] %>
+    <label class="input-form-label" for="first_name">What did you pay for? (required)</label>
+    <%= f.input :title, :class => 'input-form-item', input_html: { id: "title"}, :label => false, placeholder: "#{payment_title_arr.sample}" %>
+
+    <!-- New Expense Amount -->
+    <label class="input-form-label" for="first_name">How much did you pay? (required)</label>
+    <div class="d-flex align-center">
+      <h3 class="mr-4">£</h3>
+      <%= f.input :amount_pennies, :type => String, input_html: { id: "amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
+    </div>
+
+    <!-- Split Between -->
+    <label class="input-form-label" for="first_name">Who's Involved? (required)</label>
+    <div class="side-scroller-description side-scroller-base text-center">
+      <p>Go on then, who bought something?</p>
+    </div>
+    <% if @group.users.length < 4 %>
+      <div class="row">
+        <div class="col">
+          <div class="user-selector-area text-center">
+            <%= image_tag @user.image, class: "avatar-large avatar-new", data: { id: @user.id } %>
+            <p class="under-avatar-text"><%= @user.first_name %> (Me)</p>
+          </div>
+        </div>
+        <% @group.users.each do |member| %>
+          <% if member == @user %>
+            <% next %>
+          <% end %>
+          <div class="col">
+            <div class="user-selector-area text-center">
+              <%= image_tag member.image, class: "avatar-large avatar-new", data: { id: member.id } %>
+              <p class="under-avatar-text"><%= member.first_name %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="testimonial-group side-scroller-base">
+        <div class="row">
+          <div class="col-3">
+            <div class="user-selector-area text-center">
+              <%= image_tag @user.image, class: "avatar-large avatar-new", data: { id: @user.id } %>
+              <p class="under-avatar-text"><%= @user.first_name %> (Me)</p>
+            </div>
+          </div>
+          <% @group.users.each do |member| %>
+            <% if member == @user %>
+              <% next %>
+            <% end %>
+            <div class="col-3">
+              <div class="user-selector-area text-center">
+                <%= image_tag member.image, class: "avatar-large avatar-new", data: { id: member.id } %>
+                <p class="under-avatar-text"><%= member.first_name %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Payment Type (Optional) -->
+    <label class="input-form-label" for="payment_method">How did you pay?</label>
+    <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
+
+    <!-- Location of Expense (Optional) -->
+    <label class="input-form-label" for="first_name">Where was it?</label>
+    <% locations_arr = ["Wagamama", "The Sloaney Pony", "Picturehouse", "Le Rac Shak", "PingPong Dim Sum", "Nandos", "Theater"] %>
+    <%= f.input :location, :class => 'input-form-item', :label => false, placeholder: "#{locations_arr.sample}" %>
+
+    <!-- Description of Expense (Optional) -->
+    <label class="input-form-label" for="first_name">Description?</label>
+    <% descriptions_arr = ["Jamie's Birthday", "Open Mic Night", "Holiday on Mallorca", "Interrailing with Charlotte", "Weekend trip to Wonderland", "Deliveroo"] %>
+    <%= f.input :description, :class => 'input-form-item mb-4', :label => false, :type => "text", placeholder: "#{descriptions_arr.sample} " %>
+
+    <!-- Hidden Inputs -->
+    <%= f.input :involved_group, as: :hidden, input_html: { value: "", id: "involved_group_field" } %>
+    <!-- <%= f.hidden_field :user_id, value: @user.id %> -->
+    <!-- <%= f.hidden_field :to_pay_id, value: @user.id %> -->
+    <!-- <%= f.hidden_field :group_id, value: @group.id %> -->
+
+    <!-- Input Button (to be removed) -->
+  </div>
+    <div class="fixed-btn-section">
+      <%= button_tag type: 'submit', class: "send-btn-primary d-flex align-center justify-center" do %>
+      <p class="no-margin"><i class="fa fa-plus fa-fw fa-lg mr-2 color-white" aria-hidden="true"></i>Add Expense</p>
+      <% end %>
+      <!-- Simple Form End -->
+      <% end %>
+    </div>
+</div>
+
+<!-- ########################################################################################## -->
+<!-- Settle Expense -->
+<!-- ########################################################################################## -->
+<div id="Settle" class="tabcontent" style="display: none;">
+  <div class="container">
+    <h2><%= @group.name %></h2>
+  </div>
+</div>
+
+<!-- ########################################################################################## -->
+<!-- Javascript -->
+<!-- ########################################################################################## -->
+<% content_for(:after_js) do %>
+  <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+  <script>
+  // ###########################################################################################################
+  // Page Wide Variables:
+  // ###########################################################################################################
+    let avatars = document.querySelectorAll(".avatar-new");
+    let settleAvatars = document.querySelectorAll(".avatar-settle");
+    let description = document.querySelector(".side-scroller-description");
+    let message = {
+                  "attachment":{
+                    "type":"template",
+                    "payload":{
+                      "template_type":"generic",
+                      "elements": [{
+                        "title":"<%= @user.first_name %> just added an expense to your Kitty!",
+                        "subtitle": `They are owed for ${title.value}. It was worth £${amount.value}.`,
+                        "buttons":[{
+                          "type":"web_url",
+                          "url":"<%= ENV['NGROK'] %>",
+                          "title":"View the Expense",
+                          "webview_height_ratio": "full",
+                          "webview_share_button": "hide",
+                          "messenger_extensions": true
+                        }]
+                      }]
+                    }
+                  }
+                };
+
+  // ###########################################################################################################
+  // Output Code
+  // ###########################################################################################################
+
+  // Update Array of Members Involved and Avatar Highlighting for New Expense
+    avatars.forEach((avatar) => {
+      avatar.addEventListener("click", () => {
+        settleAvatars.forEach((settleAvatar) => {
+            settleAvatar.classList = "avatar-large avatar-settle"
+        })
+        avatar.classList.toggle("avatar-highlighted");
+        let membersArray = [];
+        alterMembersArray(membersArray);
+        document.getElementById("involved_group_field").value = `${membersArray}`;
+        chooseAndAppendDescription(membersArray);
+      })
+    })
+
+  // Update Array of Members Involved and Avatar Highlighting for Settle
+    settleAvatars.forEach((avatar) => {
+      avatar.addEventListener("click", () => {
+        avatars.forEach((newAvatar) => {
+          newAvatar.classList = "avatar-large avatar-new"
+        })
+        settleAvatars.forEach((settleAvatar) => {
+          if (settleAvatar === avatar) {
+
+          }
+          else {
+            settleAvatar.classList = "avatar-large avatar-settle"
+          }
+        })
+        avatar.classList.toggle("avatar-highlighted");
+        let membersArray = [];
+        alterSettleArray(membersArray);
+        document.getElementById("settle_group_field").value = `${membersArray}`;
+        document.getElementById("to_pay_field").value = `${membersArray}`;
+      })
+    })
+
+  // On click of send button, success and failure
+    document.querySelector(".navbar-tick-btn").addEventListener("click", () => {
+      if (document.getElementById("involved_group_field").value === "" || document.getElementById("involved_group_field").value === ["<%= @user.id %>"]) {
+        descriptionForFailedPeopleSelection();
+      }
+      else {
+        updateMessageSubtitleWithTitleAndAmount()
+        // Begin Facebook's Send to Group Flow
+        MessengerExtensions.beginShareFlow(function(share_response) {
+          // User dismissed without error, but did they share the message?
+          // if(share_response.is_sent){
+          //   // The user actually did share.
+          //   // Perhaps close the window w/ requestCloseBrowser().
+          //   MessengerExtensions.requestCloseBrowser(function success() {
+          //     // webview closed if successful
+          //   }, function error(err) {
+          //     // if an error occurred, run no code
+          //   });
+          // }
+        },
+        function(errorCode, errorMessage) {
+        // An error occurred in the process of sending message, do nothing
+        },
+        message,
+        "current_thread");
+        // End Facebook's Send to Group Flow
+        swal({
+          position: 'top-right',
+          type: 'success',
+          title: '<h3> Expense created! </h3>',
+          showConfirmButton: true,
+          confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
+          confirmButtonColor: '#00B8D8',
+        })
+      }
+    });
+
+  // ###########################################################################################################
+  // Supporter Functions
+  // ###########################################################################################################
+    function alterMembersArray(membersArray) {
+      avatars.forEach((avatar) => {
+        if (avatar.classList.contains("avatar-highlighted")) {
+          membersArray.push(avatar.dataset.id);
+        }
+      })
+      return membersArray;
+    }
+
+    function alterSettleArray(membersArray) {
+      settleAvatars.forEach((avatar) => {
+        if (avatar.classList.contains("avatar-highlighted")) {
+          membersArray.push(avatar.dataset.id);
+        }
+      })
+      return membersArray;
+    }
+
+    function descriptionForFailedPeopleSelection() {
+      document.body.append("You haven't selected anyone!");
+      description.innerHTML = "";
+    }
+
+    function updateMessageSubtitleWithTitleAndAmount() {
+      let amount = document.getElementById('amount')
+      let title = document.getElementById('title')
+      message["attachment"]["payload"]["elements"][0]["subtitle"] = `They paid £${amount.value} for ${title.value}`;
+    }
+
+    function chooseAndAppendDescription(membersArray) {
+      if (membersArray.length === <%= @group.users.count %>) {
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin','<p><strong class="color-primary">Split equally</strong> between <strong class="color-primary">all members</strong> of the group</p>');
+      }
+      else if (membersArray.length > 2 && document.getElementById("involved_group_field").value.includes(<%= @user.id.to_s %>)) {
+        const others_amount = membersArray.length - 1
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p><strong class="color-primary">Split equally</strong> between <strong class="color-primary">you and ${others_amount} others</strong></p>`);
+      }
+      else if (membersArray.length === 1 && document.getElementById("involved_group_field").value.includes(<%= @user.id.to_s %>)) {
+        const others_amount = membersArray.length - 1
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p class="no-margin">You want to make an expense just with yourself? Even a cat doubts that...</p>`);
+      }
+      else if (document.getElementById("involved_group_field").value.includes(<%= @user.id.to_s %>)) {
+        const others_amount = membersArray.length - 1
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p><strong class="color-primary">Split equally</strong> between <strong class="color-primary">you and ${others_amount} other</strong></p>`);
+      }
+      else if (membersArray.length > 1) {
+        const others_amount = membersArray.length
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p><strong class="color-primary">You are owed everything</strong> by <strong class="color-primary">${others_amount} others</strong> who split it equally</p>`);
+      }
+      else if (membersArray.length === 1) {
+        const others_amount = membersArray.length
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p><strong class="color-primary">You are owed everything</strong> by just <strong class="color-primary">${others_amount} person</strong></p>`);
+      }
+      else {
+        description.innerHTML = "";
+        description.insertAdjacentHTML('afterbegin',`<p>Well this isn't going to work is it</p>`);
+      }
+    }
+
+  </script>
+<% end %>
