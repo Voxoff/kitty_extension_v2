@@ -45,14 +45,10 @@
                         "elements": [{
                           "title":"<%= @user.first_name %> just started a Kitty for this group!",
                           "subtitle": "Kitty: Money Sharing Made Simple",
-                          "default_action":{
-                            "type":"web_url",
-                            "url": "https://kittymoneysplitting.herokuapp.com/"
-                          },
                           "buttons":[{
                             "type":"web_url",
                             "url":"<%= ENV['NGROK'] %>",
-                            "title":"Check Out Kitty",
+                            "title":"Join Kitty",
                             "webview_height_ratio": "full",
                             "webview_share_button": "hide",
                             "messenger_extensions": true
