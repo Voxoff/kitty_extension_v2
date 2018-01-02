@@ -1,6 +1,6 @@
 Rails.application.configure do
-  config.action_mailer.default_url_options = { host: "https://kittygroupspending.herokuapp.com" }
-  routes.default_url_options[:host] = 'https://kittygroupspending.herokuapp.com'
+  config.action_mailer.default_url_options = { host: "https://kittyextension.herokuapp.com" }
+  routes.default_url_options[:host] = 'https://kittyextension.herokuapp.com'
     # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
 

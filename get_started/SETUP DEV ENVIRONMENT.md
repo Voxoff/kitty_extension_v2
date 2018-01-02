@@ -13,7 +13,7 @@ development:
   NGROK: "<Your HTTPS ngrok server>"
 
 production:
-  NGROK: "https://kittygroupspending.herokuapp.com"
+  NGROK: "https://kittyextension.herokuapp.com"
 
 Start a rails server
 Use command ./ngrok http 3000 to start ngrok connected to localhost 3000 (replace 3000 with whatever localhost port you use)

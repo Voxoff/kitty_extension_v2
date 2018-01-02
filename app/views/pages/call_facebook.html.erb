@@ -42,8 +42,9 @@
           body: JSON.stringify({ 'user': result, 'signed_in_id': {user_id: <%= @user.id %>} })
         }).then(response => response.json())
           .then(data => {
-            // Redirection Occurs using API response
+            <%= puts "data" %>
             <%= puts "hello there" %>
+            // Redirection Occurs using API response
             window.location.replace(data.url)
           });
       }
