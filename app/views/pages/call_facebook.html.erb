@@ -40,10 +40,10 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({ 'user': result, 'signed_in_id': {user_id: <%= @user.id %>} })
-        })
-          .then(response => response.json())
+        }).then(response => response.json())
           .then(data => {
             // Redirection Occurs using API response
+            <%= puts "hello there" %>
             window.location.replace(data.url)
           });
       }
