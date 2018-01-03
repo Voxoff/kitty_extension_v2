@@ -21,7 +21,7 @@
         <%= image_tag @expense.user.image, class: "avatar-medium" %>
       </div>
       <div class="arrow-right-container text-center">
-        <p class="under-avatar-text no-margin">Paid Back: £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %></p>
+        <p class="under-avatar-text no-margin">Paid Back: <%= humanized_money_with_symbol @expense.amount %></p>
         <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
         <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
       </div>
@@ -36,7 +36,7 @@
         <%= image_tag @expense.user.image, class: "avatar-medium" %>
       </div>
       <div class="arrow-right-container text-center">
-        <p class="under-avatar-text no-margin">Lent: £<%= sprintf("%.2f", (split.amount_pennies.to_f / 100)) %></p>
+        <p class="under-avatar-text no-margin">Lent: <%= humanized_money_with_symbol split.amount %> <%# split.%><%# sprintf("%.2f", (split.amount_pennies.to_f / 100)) %></p>
         <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
         <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
       </div>
@@ -89,6 +89,8 @@
 
   <div class="card">
     <div class="card-body">
+      <hr>
+      <p class="no-margin">Currency: <%= @expense.amount.currency.name %></p>
       <% unless @expense.location == "" %>
         <p class="no-margin">Paid at: <%= @expense.location %></p>
       <% end %>
