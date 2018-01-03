@@ -11,6 +11,9 @@ class ExpensesController < ApplicationController
 
     @owed_array = to_be_settled_with(@group)
 
+    @eu_bank = EuCentralBank.new
+    p @eu_bank
+
   end
 
   def create

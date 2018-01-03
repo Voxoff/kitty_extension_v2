@@ -22,10 +22,9 @@ gem 'foreman'
 
 gem 'money'
 gem 'money-rails'
-gem 'eu_central_bank'
 
-gem 'http'
-gem 'httparty'
+gem 'httparty', '~> 0.15.6'
+
 
 group :development do
   gem 'web-console', '>= 3.3.0'
