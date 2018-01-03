@@ -10,7 +10,6 @@ class ExpensesController < ApplicationController
     @expense.amount_pennies = nil
 
     @owed_array = to_be_settled_with(@group)
-
   end
 
   def create
@@ -60,7 +59,7 @@ class ExpensesController < ApplicationController
     @group = current_group
 
     @expense = Expense.find(params[:id].to_i)
-    @currency = @expense.amount.currency
+    @converted_amount = convert_expense(@user, @expense)
 
     @title = expense_show_title(@expense)
     @total_lent = total_lent(@expense)
@@ -68,6 +67,18 @@ class ExpensesController < ApplicationController
   end
 
   private
+
+  def convert_expense(user, expense)
+    preferred_currency = user.preferred_currency
+    if preferred_currency == expense.amount_currency
+      return "Already in preferred currency"
+    else
+      exchange_rate_object = ExchangeRate.find_by(id: expense.exchange_rates_id)
+      exchange_rate = exchange_rate_object[:rates][preferred_currency]
+      Money.add_rate(expense.amount_currency, preferred_currency, exchange_rate)
+      return expense.amount.exchange_to(preferred_currency)
+    end
+  end
 
   def to_be_settled_with(group)
     owed_array = []

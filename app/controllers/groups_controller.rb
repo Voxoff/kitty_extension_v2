@@ -33,7 +33,6 @@ class GroupsController < ApplicationController
     @hidebtn = false
     @hidenav = false
 
-    @nav_title = "You're all square"
 
     @user = current_user
     @user.save

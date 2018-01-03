@@ -59,6 +59,12 @@
           <p class="no-margin">Total:</p>
           <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
         </div>
+        <% if @converted_amount != "Already in preferred currency" %>
+        <div>
+          <p class="no-margin">Converted Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @converted_amount %> </h4>
+        </div>
+        <% end %>
       </div>
     </div>
   <% else %>
@@ -73,6 +79,14 @@
           <h4 class="no-margin"> <%= humanized_money_with_symbol @total_lent %> </h4>
         </div>
       </div>
+      <% if @converted_amount != "Already in preferred currency" %>
+      <div class="card-body text-center d-flex align-center">
+        <div>
+          <p class="no-margin">Converted Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @converted_amount %> </h4>
+        </div>
+      </div>
+      <% end %>
     </div>
   <% end %>
 

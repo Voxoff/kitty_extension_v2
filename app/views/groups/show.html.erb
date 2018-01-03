@@ -1,3 +1,12 @@
+<!-- Defining Nav Title -->
+<% if @user.outstanding_with_group(@group) == 0 %>
+  <% @nav_title = "You're all square" %>
+<% elsif @user.outstanding_with_group(@group) < 0 %>
+  <% @nav_title = "You owe #{humanized_money_with_symbol (@user.outstanding_with_group(@group) * -1)}" %>
+<% else %>
+  <% @nav_title = "You're owed #{humanized_money_with_symbol @user.outstanding_with_group(@group)}" %>
+<% end %>
+
 <!-- Members Title -->
 <div class="container">
   <div class="title-section">
@@ -18,9 +27,9 @@
           <% if @user.outstanding_with_person_in_group(member, @group) == 0 %>
             <p class="list-item-text" >You're all square</p>
           <% elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
-            <p class="list-item-text" >You owe: <span class="color-danger"> £<%= sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f * -1 / 100) %></span></p>
+            <p class="list-item-text" >You owe: <span class="color-danger"> <%= humanized_money_with_symbol (@user.outstanding_with_person_in_group(member, @group) * -1) %></span></p>
           <% else %>
-            <p class="list-item-text">Owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_person_in_group(member, @group).to_f / 100) %></span></p>
+            <p class="list-item-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_in_group(member, @group) %></span></p>
           <% end %>
         </div>
       </div>
