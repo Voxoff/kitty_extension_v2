@@ -64,6 +64,9 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     dotenv (0.7.0)
     erubi (1.7.0)
+    eu_central_bank (1.2.0)
+      money (~> 6.10.1)
+      nokogiri (~> 1.8.1)
     execjs (2.7.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
@@ -247,6 +250,7 @@ DEPENDENCIES
   autoprefixer-rails
   bootstrap (~> 4.0.0.beta2.1)
   devise
+  eu_central_bank
   figaro
   font-awesome-sass
   foreman

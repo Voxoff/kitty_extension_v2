@@ -22,6 +22,7 @@ gem 'foreman'
 
 gem 'money'
 gem 'money-rails'
+gem 'eu_central_bank'
 
 gem 'http'
 gem 'httparty'
