@@ -1,5 +1,5 @@
 <% unless @hidenav %>
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-background">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-background" id="navbar">
     <!-- Links directly in navbar -->
     <h3 class="navbar-brand no-margin" href="#"><%= @nav_title %></h3>
     <a class="navbar-toggler collapsed no-border no-padding" data-toggle="collapse" data-target="#navbarNavDropdown-1" aria-controls="navbarNavDropdown-1" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +56,7 @@
 <% content_for(:after_js) do %>
   <script>
   // BURGER MENU ANIMATION
+  let navbar = document.querySelector("#navbar")
   let burger = document.querySelector("#burger-menu")
   let menu = document.querySelector("#hidden-menu-1")
   let content = document.querySelector("#content-container")
@@ -63,6 +64,7 @@
     burger.classList.toggle("navbar-toggler-icon-rotated")
     menu.classList.toggle("hidden-menu-show")
     content.classList.toggle("content-hide")
+    navbar.classList.toggle("navbar-fixed")
   })
   </script>
 <% end %>

@@ -59,9 +59,13 @@
   display: block;
 }
 
-// .content-hide {
-//   display: none;
-// }
+.content-hide {
+  display: none;
+}
+
+.navbar-fixed {
+  display: sticky;
+}
 
 .nav-item {
   margin: 20px 0;
