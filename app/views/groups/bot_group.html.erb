@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="plain-card-content-center-vertical-max-height">
+    <div class="text-center">
+      <h3>You aren't in a group chat right now...</h3>
+      <p>When in a group chat, press the plus next to the keyboard and tap on Kitty to create a Kitty for that group!</p>
+    </div>
+  </div>
+
+  <% if @group.users.length == 1 && @group.thread_type != "USER_TO_PAGE"%>
+  <script>
+  function autoRefresh1(){
+    window.location.reload();
+  }
+  setInterval('autoRefresh1()', 5000);
+  </script>
+  <% end %>
+</div>

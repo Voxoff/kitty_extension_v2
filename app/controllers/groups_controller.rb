@@ -29,6 +29,11 @@ class GroupsController < ApplicationController
     @hidenav = true
   end
 
+  def bot_group
+    @hidebtn = true
+    @hidenav = true
+  end
+
   def show
     @hidebtn = false
     @hidenav = false
@@ -42,7 +47,11 @@ class GroupsController < ApplicationController
     @group.save
     @title = @group.name
 
-    if @group.users.length == 1
+
+    if @group.thread_type == "USER_TO_PAGE"
+      @hidebtn = true
+      render 'bot_group'
+    elsif @group.users.length == 1
       @hidebtn = true
       render 'empty_group'
     end
