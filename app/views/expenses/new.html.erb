@@ -18,8 +18,9 @@
 
     <!-- New Expense Amount -->
     <label class="input-form-label" for="first_name">How much did you pay? (required)</label>
-    <div class="d-flex align-center">
-      <%= f.input :amount_currency, :type => String, input_html: { id: "add-currency"}, :class => 'input-form-item', :label => false, collection: ["GBP", "EUR", "USD", "CAD", "CHF", "DKK", "SGD", "ZAR", "MXN"] %>
+    <div class="form-flex">
+      <%= f.input :amount_currency, :type => String, input_html: { id: "add-currency"},  :class => 'input-form-item', :label => false, collection: ["GBP", "EUR", "USD", "CAD", "CHF", "DKK", "SGD", "ZAR", "MXN"] %>
+      <p class="mt-2 mr-4"><i class="fa fa-caret-down color-primary" aria-hidden="true"></i></p>
       <%= f.input :amount_pennies, :type => String, input_html: { id: "amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
     </div>
 
@@ -74,8 +75,10 @@
 
     <!-- Payment Type (Optional) -->
     <label class="input-form-label" for="payment_method">How did you pay?</label>
-    <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
-
+    <div class="form-flex">
+      <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
+      <p class="mt-2 mr-4"><i class="fa fa-caret-down color-primary" aria-hidden="true"></i></p>
+    </div>
     <!-- Location of Expense (Optional) -->
     <label class="input-form-label" for="first_name">Where was it?</label>
     <% locations_arr = ["Wagamama", "The Sloaney Pony", "Picturehouse", "Le Rac Shak", "PingPong Dim Sum", "Nandos", "Theater"] %>
@@ -145,12 +148,17 @@
     </div>
     <div class="container">
       <%= simple_form_for [ @expense ] do |f| %>
-        <!-- Choose Amount to Settle -->
+        <!-- Choose How to Settle -->
         <label class="input-form-label" for="payment_method">How did you pay? (required)</label>
-        <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
+        <div class="form-flex">
+          <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
+          <p class="mt-2 mr-4"><i class="fa fa-caret-down color-primary" aria-hidden="true"></i></p>
+        </div>
+        <!-- Choose Amount to Settle -->
         <label class="input-form-label" for="amount_cents">How much? (required)</label>
-        <div class="d-flex align-center">
+        <div class="form-flex">
           <%= f.input :amount_currency, :type => String, input_html: { id: "settle-currency"}, :class => 'input-form-item', :label => false, collection: ["GBP", "EUR", "USD", "CAD", "CHF", "DKK", "SGD", "ZAR", "MXN"] %>
+          <p class="mt-2 mr-4"><i class="fa fa-caret-down color-primary" aria-hidden="true"></i></p>
           <%= f.input :amount_pennies, :type => String, input_html: { id: "settle-amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
         </div>
 

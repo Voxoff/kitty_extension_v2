@@ -122,4 +122,56 @@
   </script>
   <% @user.first_sign_in = false %>
   <% @user.save %>
+<% elsif @user.seen_update == false %>
+  <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+  <script>
+  swal.setDefaults({
+  type: 'info',
+  confirmButtonText: 'Next &rarr;',
+  confirmButtonColor: '#00B8D8',
+  progressSteps: ['1', '2', '3', '4']
+  })
+
+  var steps = [
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Welcome to the update!</h3>',
+    confirmButtonText: 'See whats new',
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>13 Exchange Rates!</h3>',
+    text: "Kitty is great on holiday! Let everyone use up all their foreign currency and you can pay back at home."
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Settle All!</h3>',
+    text: "One button to even up with a friend across all Kittys."
+  },
+  {
+    position: 'top-right',
+    type: 'info',
+    title: '<h3>Paypal Details in Profile!</h3>',
+    text: 'Check a friends profile to get their Paypal details.'
+  },
+  ]
+
+  swal.queue(steps).then((result) => {
+  swal.resetDefaults()
+
+  if (result.value) {
+    swal({
+      position: 'top-right',
+      title: "<h3>That's everything for now. More coming soon!</h3>",
+      confirmButtonText: 'All Understood!',
+      confirmButtonColor: '#00B8D8'
+    })
+  }
+  })
+  </script>
+  <% @user.seen_update = true %>
+  <% @user.save %>
 <% end %>

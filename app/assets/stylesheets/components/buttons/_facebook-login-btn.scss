@@ -1,12 +1,11 @@
 .facebook-login-btn {
-  height: 50px;
-  width: 300px;
-  background-color: $fb-blue;
+  height: 40px;
+  width: 180px;
+  background-color: $fb-login-blue;
   color: white;
-  border-radius: 8px;
+  border-radius: 3px;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .facebook-login-btn a {
@@ -25,6 +24,11 @@
   color: white;
   font-family: 'Roboto';
   font-weight: bold;
+  font-size: 20px;
+}
+
+.continue-with-facebook-text {
+  flex-grow: 1;
 }
 
 .facebook-login-btn:hover {

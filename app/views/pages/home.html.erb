@@ -1,21 +1,23 @@
 <div class="plain-card-content-center-vertical-max-height">
   <div class="content text-center">
-    <h1 class="color-primary">Welcome to Kitty</h1>
-    <p>Making group spending as simple as possible</p>
-
-    <div style="height:100px;"></div>
+    <%= image_tag 'primary_logo_and_text.png', width: "300" %>
+    <div class="mb-4"></div>
+    <div class="container">
+      <h3 class="mb-4"> Simplify group spending. </h3>
+      <p> 1. Track group spending. <br> 2. Pay back when convient. <br> 3. Minimise transaction costs by minimising transactions.</p>
+      <p class="no-margin"> It's a new way of thinking.</p>
+    </div>
     <div class="facebook-btn-position">
       <div class="facebook-login-btn">
         <% unless current_user %>
         <%= link_to user_facebook_omniauth_authorize_path do %>
-          <h5 class="no-margin continue-with-facebook"><i class="fa fa-facebook fa-fw fa-lg" aria-hidden="true"></i></h5>
-          <h5 class="no-margin continue-with-facebook pl-2">Continue with Facebook</h5>
+          <h5 class="no-margin continue-with-facebook pl-1"><i class="fa fa-facebook fa-fw fa-lg" aria-hidden="true"></i></h5>
+          <h5 class="no-margin text-center continue-with-facebook continue-with-facebook-text pl-3">Continue</h5>
         <% end %>
         <% else %>
         <%= link_to "Logout", destroy_user_session_path, method: :delete %>
         <% end %>
       </div>
-
     </div>
   </div>
 </div>

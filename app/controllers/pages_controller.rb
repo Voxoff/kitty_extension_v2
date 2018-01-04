@@ -4,7 +4,7 @@ class PagesController < ApplicationController
   def home
     @hidebtn = true
     @hidenav = true
-
+    @expense = Expense.new
   end
 
   def call_facebook

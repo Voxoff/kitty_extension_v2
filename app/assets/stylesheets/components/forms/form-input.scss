@@ -52,9 +52,17 @@ select.form-control:hover {
   border-radius: 0.2rem;
 }
 
-select.form-control-sm:not([size]):not([multiple]) {
-  height: calc(1.575rem + 2px);
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  flex-grow: 1;
 }
+
+// select.form-control-sm:not([size]):not([multiple]) {
+//   height: calc(1.575rem + 2px);
+// }
 
 .form-control-lg {
   padding: 0.75rem 1.75rem;
@@ -62,9 +70,9 @@ select.form-control-sm:not([size]):not([multiple]) {
   border-radius: 0.5rem;
 }
 
-select.form-control-lg:not([size]):not([multiple]) {
-  height: calc(2.5rem + 2px);
-}
+// select.form-control-lg:not([size]):not([multiple]) {
+//   height: calc(2.5rem + 2px);
+// }
 
 input:focus + label {
     color: white;
@@ -81,4 +89,9 @@ input:focus + label {
 
 .file.required {
   border-bottom: 1px solid #becad6;
+}
+
+.form-flex {
+  display: flex;
+  justify-content: left;
 }
