@@ -1,7 +1,7 @@
 <div class="profile-header text-center">
-  <%= image_tag @user.image, class: "avatar-profile-picture" %>
-  <h2 class="color-white"><%= @user.first_name %> <%= @user.last_name %></h2>
-  <h5 class="color-white"><%= @user.email %></h5>
+  <%= image_tag @profile_owner.image, class: "avatar-profile-picture" %>
+  <h2 class="color-white"><%= @profile_owner.first_name %> <%= @profile_owner.last_name %></h2>
+  <h5 class="color-white"><%= @profile_owner.email %></h5>
 </div>
 
 <div class="container">
@@ -15,10 +15,10 @@
         <h4 class="no-margin">£0.00</h4>
       <% elsif @balance > 0 %>
         <p class="mb-3">Across all groups, owed:</p>
-        <h4 class="no-margin color-primary"><span class="color-primary">£<%= sprintf("%.2f", (@balance.to_f) / 100) %></span></h4>
+        <h4 class="no-margin color-primary"><span class="color-primary"><%= humanized_money_with_symbol @balance %></span></h4>
       <% else %>
         <p class="mb-3">Across all groups, owe:</p>
-        <h4 class="no-margin color-danger"><span class="color-danger">£<%= sprintf("%.2f", (@balance.to_f) / 100  * -1) %></span></h4>
+        <h4 class="no-margin color-danger"><span class="color-danger"><%= humanized_money_with_symbol (@balance * -1) %></span></h4>
       <% end %>
     </div>
   </div>
@@ -41,9 +41,9 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <p class="no-margin"><strong>Paypal:</strong> <%= @user.email %></p>
+      <p class="no-margin"><strong>Paypal:</strong> <%= @profile_owner.email %></p>
       <hr>
-      <p class="no-margin"><strong>Joined On:</strong> <%= @user.created_at.strftime("%b %d, %Y") %></p>
+      <p class="no-margin"><strong>Joined On:</strong> <%= @profile_owner.created_at.strftime("%b %d, %Y") %></p>
     </div>
   </div>
   <div class="card-row-space"></div>

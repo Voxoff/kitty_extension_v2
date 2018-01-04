@@ -10,7 +10,6 @@ class ExpensesController < ApplicationController
     @expense.amount_pennies = nil
 
     @owed_array = to_be_settled_with(@group)
-
   end
 
   def create
@@ -22,26 +21,29 @@ class ExpensesController < ApplicationController
     @group = current_group
 
     @title = getparams[:title]
+    @amount_currency = getparams[:amount_currency]
     @amount_pennies = getparams[:amount_pennies].to_f * 100
     @description = getparams[:description]
     @payment_method = payment_type
     @involved_group_string = get_involved_group(getparams[:involved_group], getparams[:settle_group])
     @location = getparams[:location]
+    @exchange_rates_snapshot_id = ExchangeRate.where(base: @amount_currency).last.id
 
     @expense = Expense.new(
         title: @title,
         description: @description,
         amount_pennies: @amount_pennies,
-        amount_currency: "GBP",
-        amount: Money.new(@amount_pennies, "GBP"),
+        amount_currency: @amount_currency,
+        amount: Money.new(@amount_pennies, @amount_currency),
         user_id: @user.id,
         group_id: @group.id,
         location: @location,
         payment_method: @payment_method)
+    @expense.exchange_rates_id = @exchange_rates_snapshot_id
 
     if @involved_group_string != "" && @involved_group_string != [@user.id.to_s] && @expense.save
       equal_splitter(@expense, @involved_group_string)
-      redirect_to expense_path(@expense, user_id: @user.id, group_id: @group.id)
+      redirect_to expense_path(@expense)
     else
       @hidebtn = true
       flash.now[:alert] = "You didn't select anyone"
@@ -52,14 +54,31 @@ class ExpensesController < ApplicationController
   def show
     @hidebtn = false
     @hidenav = false
-    @expense = Expense.find(params[:id].to_i)
+
     @user = current_user
     @group = current_group
+
+    @expense = Expense.find(params[:id].to_i)
+    @converted_amount = convert_expense(@user, @expense)
+
     @title = expense_show_title(@expense)
     @total_lent = total_lent(@expense)
+
   end
 
   private
+
+  def convert_expense(user, expense)
+    preferred_currency = user.preferred_currency
+    if preferred_currency == expense.amount_currency
+      return "Already in preferred currency"
+    else
+      exchange_rate_object = ExchangeRate.find_by(id: expense.exchange_rates_id)
+      exchange_rate = exchange_rate_object[:rates][preferred_currency]
+      Money.add_rate(expense.amount_currency, preferred_currency, exchange_rate)
+      return expense.amount.exchange_to(preferred_currency)
+    end
+  end
 
   def to_be_settled_with(group)
     owed_array = []
@@ -72,7 +91,7 @@ class ExpensesController < ApplicationController
   end
 
   def total_lent(expense)
-    total_amount = Money.new(0, 'GBP')
+    total_amount = Money.new(0, expense.amount_currency)
     expense.splits.each do |split|
       total_amount += split.amount
     end
@@ -98,8 +117,8 @@ class ExpensesController < ApplicationController
       split = Split.new(expense_id: expense.id,
         user_id: member_id,
         amount_pennies: an_equal_split,
-        amount_currency: "GBP",
-        amount: Money.new(an_equal_split, "GBP"))
+        amount_currency: expense.amount_currency,
+        amount: Money.new(an_equal_split, expense.amount_currency))
       split.save!
     end
   end
@@ -125,6 +144,6 @@ class ExpensesController < ApplicationController
   end
 
   def getparams
-    params.require(:expense).permit(:id, :split_type, :location, :settle, :title, :amount_pennies, :description, :user_id, :group_id, :involved_group, :settle_group, :to_pay_id, :payment_method)
+    params.require(:expense).permit(:id, :split_type, :location, :settle, :title, :amount_currency, :amount_pennies, :description, :user_id, :group_id, :involved_group, :settle_group, :to_pay_id, :payment_method)
   end
 end

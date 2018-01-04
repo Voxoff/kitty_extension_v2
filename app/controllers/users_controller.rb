@@ -5,11 +5,12 @@ class UsersController < ApplicationController
 
     @user = current_user
     @group = current_group
+    @profile_owner = User.find(params[:id])
 
-    @balance = get_user_balance(@user)
-    @expenses_paid = Expense.where(user_id: @user.id)
+    @balance = get_user_balance(@profile_owner)
+    @expenses_paid = Expense.where(user_id: @profile_owner.id)
     @amount_lent = amount_lent(@expenses_paid)
-    @splits_owed = Split.where(user_id: @user.id)
+    @splits_owed = Split.where(user_id: @profile_owner.id)
     @amount_borrowed = amount_borrowed(@splits_owed)
   end
 
@@ -61,7 +62,63 @@ class UsersController < ApplicationController
     @balance = get_user_balance(@user)
   end
 
+  def settle_all
+    @hidebtn = true
+    @hidenav = true
+
+    @user = current_user
+    @group = current_group
+    @settle_with_user = User.find(params["settle_with_id"])
+
+    settle_up_in_each_group(@user, @settle_with_user)
+    redirect_to user_friends_path(@user)
+  end
+
   private
+
+  def settle_up_in_each_group(user, settle_with_user)
+    user_groups = Group.joins(:memberships).where(memberships: {user_id: user.id})
+    settle_with_user_groups = Group.joins(:memberships).where(memberships: {user_id: settle_with_user.id})
+    shared_groups = []
+
+    user_groups.each do |group|
+      if group.users.include?(settle_with_user)
+        shared_groups << group
+      end
+    end
+    settle_with_user_groups.each do |group|
+      if group.users.include?(settle_with_user)
+        shared_groups << group
+      end
+    end
+
+    shared_groups.uniq.each do |group|
+      amount_pennies = (user.outstanding_with_person_in_group(settle_with_user, group) * -1).fractional
+      amount_currency = (user.outstanding_with_person_in_group(settle_with_user, group) * -1).currency.iso_code
+
+      expense = Expense.new(
+          title: "#{user.first_name} settled up with #{settle_with_user.first_name}",
+          description: "Settled",
+          amount_pennies: amount_pennies,
+          amount_currency: amount_currency,
+          amount: Money.new(amount_pennies, amount_currency),
+          user_id: user.id,
+          group_id: group.id,
+          location: "",
+          payment_method: "card")
+      expense.exchange_rates_id = ExchangeRate.where(base: amount_currency).last.id
+
+      if expense.save
+        split = Split.new(expense_id: expense.id,
+          user_id: settle_with_user.id,
+          amount_pennies: expense.amount_pennies,
+          amount_currency: expense.amount_currency,
+          amount: Money.new(expense.amount_pennies, expense.amount_currency))
+
+        split.save!
+      end
+    end
+  end
 
   def all_user_transactions(user)
     transactions = []
@@ -111,8 +168,8 @@ class UsersController < ApplicationController
 
   def get_user_balance(user)
     balance_cents = 0
-    @user.groups.each do |group|
-      balance_cents += @user.outstanding_with_group(group)
+    user.groups.each do |group|
+      balance_cents += user.outstanding_with_group(group)
     end
     return balance_cents
   end

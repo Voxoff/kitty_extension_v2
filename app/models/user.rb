@@ -36,15 +36,33 @@ class User < ApplicationRecord
     user_owed_splits = Split.joins(:expense).where(expenses: {user_id: self.id}).where(user_id: comparison_user.id).where(expenses: {group_id: group.id})
     user_owes_splits = Split.joins(:expense).where(expenses: {user_id: comparison_user.id}).where(user_id: self.id).where(expenses: {group_id: group.id})
 
-    user_owes_total = 0
-    user_owed_total = 0
+    currency = self.preferred_currency
+
+    user_owes_total = Money.new(0, currency)
+    user_owed_total = Money.new(0, currency)
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owed_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owed_total += split_amount_in_preferred_currency
+      end
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owes_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owes_total += split_amount_in_preferred_currency
+      end
     end
 
     return user_owed_total - user_owes_total
@@ -54,15 +72,33 @@ class User < ApplicationRecord
     user_owed_splits = Split.joins(:expense).where(expenses: {user_id: self.id}).where(user_id: comparison_user.id)
     user_owes_splits = Split.joins(:expense).where(expenses: {user_id: comparison_user.id}).where(user_id: self.id)
 
-    user_owes_total = 0
-    user_owed_total = 0
+    currency = self.preferred_currency
+
+    user_owes_total = Money.new(0, currency)
+    user_owed_total = Money.new(0, currency)
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owed_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owed_total += split_amount_in_preferred_currency
+      end
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owes_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owes_total += split_amount_in_preferred_currency
+      end
     end
 
     return user_owed_total - user_owes_total
@@ -72,15 +108,33 @@ class User < ApplicationRecord
     user_owes_splits = Split.joins(:expense).where(user_id: self.id).where(expenses: {group_id: group.id})
     user_owed_splits = Split.joins(:expense).where(expenses: {user_id: self.id}).where(expenses: {group_id: group.id})
 
-    user_owes_total = 0
-    user_owed_total = 0
+    currency = self.preferred_currency
+
+    user_owes_total = Money.new(0, currency)
+    user_owed_total = Money.new(0, currency)
 
     user_owed_splits.each do |split|
-      user_owed_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owed_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owed_total += split_amount_in_preferred_currency
+      end
     end
 
     user_owes_splits.each do |split|
-      user_owes_total += split.amount_pennies
+      if split.amount_currency == currency
+        user_owes_total += split.amount
+      else
+        exchange_rate_object = ExchangeRate.find_by(id: split.expense.exchange_rates_id)
+        exchange_rate = exchange_rate_object[:rates][currency]
+        Money.add_rate(split.amount_currency, currency, exchange_rate)
+        split_amount_in_preferred_currency = split.amount.exchange_to(currency)
+        user_owes_total += split_amount_in_preferred_currency
+      end
     end
 
     return user_owed_total - user_owes_total

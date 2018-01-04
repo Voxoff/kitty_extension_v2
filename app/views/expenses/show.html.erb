@@ -21,7 +21,7 @@
         <%= image_tag @expense.user.image, class: "avatar-medium" %>
       </div>
       <div class="arrow-right-container text-center">
-        <p class="under-avatar-text no-margin">Paid Back: £<%= sprintf("%.2f", (@expense.amount_pennies.to_f / 100)) %></p>
+        <p class="under-avatar-text no-margin">Paid Back: <%= humanized_money_with_symbol @expense.amount %></p>
         <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
         <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
       </div>
@@ -36,7 +36,7 @@
         <%= image_tag @expense.user.image, class: "avatar-medium" %>
       </div>
       <div class="arrow-right-container text-center">
-        <p class="under-avatar-text no-margin">Lent: £<%= sprintf("%.2f", (split.amount_pennies.to_f / 100)) %></p>
+        <p class="under-avatar-text no-margin">Lent: <%= humanized_money_with_symbol split.amount %> <%# split.%><%# sprintf("%.2f", (split.amount_pennies.to_f / 100)) %></p>
         <%= image_tag 'arrow-right.svg', class: "arrow-right"%>
         <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
       </div>
@@ -59,6 +59,12 @@
           <p class="no-margin">Total:</p>
           <h4 class="no-margin"> <%= humanized_money_with_symbol @expense.amount %> </h4>
         </div>
+        <% if @converted_amount != "Already in preferred currency" %>
+        <div>
+          <p class="no-margin">Converted Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @converted_amount %> </h4>
+        </div>
+        <% end %>
       </div>
     </div>
   <% else %>
@@ -73,6 +79,14 @@
           <h4 class="no-margin"> <%= humanized_money_with_symbol @total_lent %> </h4>
         </div>
       </div>
+      <% if @converted_amount != "Already in preferred currency" %>
+      <div class="card-body text-center d-flex align-center">
+        <div>
+          <p class="no-margin">Converted Total:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @converted_amount %> </h4>
+        </div>
+      </div>
+      <% end %>
     </div>
   <% end %>
 
@@ -89,6 +103,8 @@
 
   <div class="card">
     <div class="card-body">
+      <hr>
+      <p class="no-margin">Currency: <%= @expense.amount.currency.name %></p>
       <% unless @expense.location == "" %>
         <p class="no-margin">Paid at: <%= @expense.location %></p>
       <% end %>

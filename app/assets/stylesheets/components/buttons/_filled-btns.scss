@@ -1,8 +1,25 @@
 .btn-filled-primary {
   color: white;
   background-color: $green;
+  border: 0px;
 }
 .btn-filled-danger {
   color: white;
   background-color: $red;
+  border: 0px;
+}
+.btn-filled-info {
+  color: white;
+  background-color: $info-blue;
+  border: 0px;
+}
+.btn-filled-warning {
+  color: white;
+  background-color: $yellow;
+  border: 0px;
+}
+.btn-filled-secondary {
+  color: white;
+  background-color: $gray;
+  border: 0px;
 }

@@ -19,14 +19,14 @@
     <!-- New Expense Amount -->
     <label class="input-form-label" for="first_name">How much did you pay? (required)</label>
     <div class="d-flex align-center">
-      <h3 class="mr-4">£</h3>
+      <%= f.input :amount_currency, :type => String, input_html: { id: "add-currency"}, :class => 'input-form-item', :label => false, collection: ["GBP", "EUR", "USD", "CAD", "CHF", "DKK", "SGD", "ZAR", "MXN"] %>
       <%= f.input :amount_pennies, :type => String, input_html: { id: "amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
     </div>
 
     <!-- Split Between -->
     <label class="input-form-label" for="first_name">Who's Involved? (required)</label>
     <div class="side-scroller-description side-scroller-base text-center">
-      <p>Go on then, who bought something?</p>
+      <p>Tap on people to show who owes you</p>
     </div>
     <% if @group.users.length < 4 %>
       <div class="row">
@@ -150,7 +150,7 @@
         <%= f.input :payment_method, :type => String, input_html: { id: "payment-method"}, :class => 'input-form-item', :label => false, collection: ["Facebook Payments", "Bank Transfer", "Card", "Cash", "Paypal"] %>
         <label class="input-form-label" for="amount_cents">How much? (required)</label>
         <div class="d-flex align-center">
-          <h3 class="mr-4">£</h3>
+          <%= f.input :amount_currency, :type => String, input_html: { id: "settle-currency"}, :class => 'input-form-item', :label => false, collection: ["GBP", "EUR", "USD", "CAD", "CHF", "DKK", "SGD", "ZAR", "MXN"] %>
           <%= f.input :amount_pennies, :type => String, input_html: { id: "settle-amount"}, :class => 'input-form-item', :label => false, placeholder: "0.00" %>
         </div>
 
@@ -292,6 +292,7 @@
           descriptionForFailedPeopleSelection();
         }
         else {
+          let currency = document.getElementById('settle-currency')
           let amount = document.getElementById('settle-amount')
           let message = {
                       "attachment":{
@@ -300,7 +301,7 @@
                           "template_type":"generic",
                           "elements": [{
                             "title":"<%= @user.first_name %> just settled an expense in your Kitty!",
-                            "subtitle": `They paid back £${amount.value}`,
+                            "subtitle": `They paid back ${currency.value}${amount.value}`,
                             "buttons":[{
                               "type":"web_url",
                               "url":"<%= ENV['NGROK'] %>",
@@ -360,9 +361,10 @@
     }
 
     function updateMessageSubtitleWithTitleAndAmount() {
+      let currency = document.getElementById('settle-currency')
       let amount = document.getElementById('amount')
       let title = document.getElementById('title')
-      message["attachment"]["payload"]["elements"][0]["subtitle"] = `They paid £${amount.value} for ${title.value}`;
+      message["attachment"]["payload"]["elements"][0]["subtitle"] = `They paid ${currency.value}${amount.value} for ${title.value}`;
     }
 
     function chooseAndAppendDescription(membersArray) {
