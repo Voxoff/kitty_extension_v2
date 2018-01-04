@@ -77,6 +77,19 @@ class GroupsController < ApplicationController
     @group = current_group
   end
 
+  def destroy
+    @hidebtn = true
+    @hidenav = true
+
+    @user = current_user
+    @group = current_group
+
+    @group_to_delete = Group.find(params[:group_to_delete_id])
+    @group_to_delete.closed = true
+    @group_to_delete.save
+    redirect_to group_path(@group)
+  end
+
   private
 
   def group_members_that_owe_you(user, group)

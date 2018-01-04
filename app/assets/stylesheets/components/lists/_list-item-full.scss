@@ -1,0 +1,20 @@
+.list-item-full {
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.list-item-full:last-child {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.list-item-full-buttons-section {
+  padding: 5px;
+}
+
+.divider-no-flex {
+  flex-grow: 1;
+}
+
+.list-item-full-divider-content {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 5px 0;
+}

@@ -16,10 +16,10 @@
           <h4 class="no-margin">£0.00</h4>
         <% elsif @balance > 0 %>
           <p class="mb-3">Across all groups, owed:</p>
-          <h4 class="no-margin color-primary"><span class="color-primary">£<%= sprintf("%.2f", (@balance.to_f) / 100) %></span></h4>
+          <h4 class="no-margin color-primary"><span class="color-primary"><%= humanized_money_with_symbol @balance %></span></h4>
         <% else %>
           <p class="mb-3">Across all groups, owe:</p>
-          <h4 class="no-margin color-danger"><span class="color-danger">£<%= sprintf("%.2f", (@balance.to_f) / 100  * -1) %></span></h4>
+          <h4 class="no-margin color-danger"><span class="color-danger"><%= humanized_money_with_symbol (@balance * -1) %></span></h4>
         <% end %>
       </div>
     </div>
@@ -87,9 +87,9 @@
               <% if @user.outstanding_with_group(group) == 0 %>
                 <p class="mb-1">All square in this group!</p>
               <% elsif @user.outstanding_with_group(group) > 0 %>
-                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", (@user.outstanding_with_group(group).to_f)/100) %></span></p>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_group(group) %></span></p>
               <% else %>
-                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger"><%= humanized_money_with_symbol (@user.outstanding_with_group(group) * -1) %></span></p>
               <% end %>
               <% i = 0 %>
               <% group.users.each do |member| %>
@@ -102,7 +102,7 @@
                   <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
                   <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
                   <% end %> -->
-                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <%= link_to group_path(group, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
                   <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
                   <% end %>
               <% else %>
@@ -130,9 +130,9 @@
               <% if @user.outstanding_with_group(group) == 0 %>
                 <p class="mb-1">All square in this group!</p>
               <% elsif @user.outstanding_with_group(group) > 0 %>
-                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_group(group) %></span></p>
               <% else %>
-                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger"><%= humanized_money_with_symbol (@user.outstanding_with_group(group) * -1) %></span></p>
               <% end %>
               <% i = 0 %>
               <% group.users.each do |member| %>
@@ -145,7 +145,7 @@
                   <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
                   <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
                   <% end %> -->
-                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <%= link_to group_path(group, group_to_delete_id: group.id), method: :delete do %>
                   <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
                   <% end %>
               <% else %>
@@ -174,9 +174,9 @@
               <% if @user.outstanding_with_group(group) == 0 %>
                 <p class="mb-1">All square in this group!</p>
               <% elsif @user.outstanding_with_group(group) > 0 %>
-                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_group(group) %></span></p>
               <% else %>
-                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger"><%= humanized_money_with_symbol (@user.outstanding_with_group(group) * -1) %></span></p>
               <% end %>
               <% i = 0 %>
               <% group.users.each do |member| %>
@@ -189,7 +189,7 @@
                   <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
                   <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
                   <% end %> -->
-                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <%= link_to group_path(group, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
                   <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
                   <% end %>
               <% else %>
@@ -219,9 +219,9 @@
               <% if @user.outstanding_with_group(group) == 0 %>
                 <p class="mb-1">All square in this group!</p>
               <% elsif @user.outstanding_with_group(group) > 0 %>
-                <p class="mb-1">Overall, the group owes you: <span class="color-primary">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f / 100) %></span></p>
+                <p class="mb-1">Overall, the group owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_group(group) %></span></p>
               <% else %>
-                <p class="mb-1">Overall, you owe this group: <span class="color-danger">£<%= sprintf("%.2f", @user.outstanding_with_group(group).to_f * -1 / 100) %></span></p>
+                <p class="mb-1">Overall, you owe this group: <span class="color-danger"><%= humanized_money_with_symbol (@user.outstanding_with_group(group) * -1) %></span></p>
               <% end %>
               <% i = 0 %>
               <% group.users.each do |member| %>
@@ -234,7 +234,7 @@
                   <!-- <%= link_to group_path(user_id: @user.id, group_id: group.id) do %>
                   <p class="btn btn-filled-primary mr-2 mb-0"><i class="fa fa-search fa-fw" aria-hidden="true"></i> See Group</p>
                   <% end %> -->
-                  <%= link_to group_path(group, user_id: @user.id, group_id: @group, group_to_delete_id: group.id), method: :delete do %>
+                  <%= link_to group_path(group, group_to_delete_id: group.id), method: :delete do %>
                   <p class="btn btn-filled-danger no-margin"><i class="fa fa-times fa-lg fa-fw" aria-hidden="true"></i> Shut Down Kitty</p>
                   <% end %>
               <% else %>
