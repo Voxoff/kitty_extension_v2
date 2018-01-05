@@ -1,8 +1,20 @@
 <div class="profile-header text-center">
   <%= image_tag @profile_owner.image + "?type=large", class: "avatar-profile-picture" %>
   <h2 class="color-white"><%= @profile_owner.first_name %> <%= @profile_owner.last_name %></h2>
-  <% if @profile_owner != @user && @user.outstanding_with_person_overall(@profile_owner) < 0 %>
-    <p class="btn btn-primary no-margin btn-filled-primary settle-up-button" data-id="<%= @profile_owner.id %>" data-name="<%= @profile_owner.first_name %>" data-amount="<%= humanized_money_with_symbol (@user.outstanding_with_person_overall(@profile_owner) * -1) %>">Settle Up</p>
+  <% if @profile_owner != @user %>
+    <% if @user.outstanding_with_person_overall(@profile_owner) < 0 %>
+      <h4 class="color-white">You owe them: <%= humanized_money_with_symbol (@user.outstanding_with_person_overall(@profile_owner) * -1) %></h4>
+      <div class="mb-4 text-center">
+        <h5 class="no-margin settle-up-button" data-id="<%= @profile_owner.id %>" data-name="<%= @profile_owner.first_name %>" data-amount="<%= humanized_money_with_symbol (@user.outstanding_with_person_overall(@profile_owner) * -1) %>">Settle All</h5>
+      </div>
+    <% elsif @user.outstanding_with_person_overall(@profile_owner) > 0 %>
+      <h4 class="color-white">They owe you: <%= humanized_money_with_symbol @user.outstanding_with_person_overall(@profile_owner) %></h4>
+      <!-- <div class="mb-4 text-center"> -->
+        <!-- <h5 class="no-margin remind-button" data-id="<%= @profile_owner.id %>" data-name="<%= @profile_owner.first_name %>" data-amount="<%= humanized_money_with_symbol @user.outstanding_with_person_overall(@profile_owner) %>">Remind</h5> -->
+      <!-- </div> -->
+    <% else %>
+      <h4 class="color-white">All Square</h4>
+    <% end %>
   <% end %>
 </div>
 

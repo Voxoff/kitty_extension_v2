@@ -16,3 +16,15 @@
 .section-spacer {
   height: 40px;
 }
+
+.date-section {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $light-gray;
+}
+
+.date-section h5 {
+  color: $gray;
+}

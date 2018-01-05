@@ -13,3 +13,7 @@
 .alert-warning {
   background: $red;
 }
+
+.flash.alert:empty {
+  display: none;
+}

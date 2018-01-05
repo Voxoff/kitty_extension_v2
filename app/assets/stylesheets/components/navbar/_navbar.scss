@@ -32,7 +32,7 @@
 }
 
 .hidden-menu {
-  background-color: $green;
+  background: linear-gradient(to bottom right, #63D075 0%, #63D075 50%, #ADFFBB 100%);
   height: calc(100vh - 56px);
   width: 0px;
   position: fixed; /* Stay in place */

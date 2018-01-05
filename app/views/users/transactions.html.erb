@@ -8,7 +8,7 @@
       <h5>No expenses yet. Open a group to add one.</h5>
     <% else %>
       <% @transaction_dates.each do |date| %>
-        <div class="title-section">
+        <div class="date-section">
           <h5 class="no-margin"><%= date %></h5>
         </div>
         <hr class="no-margin">
@@ -69,16 +69,18 @@
   <!-- Create Tabs -->
   <!-- ########################################################################################## -->
   <%= render 'shared/tabs' %>
-  <div class="mb-4"></div>
 
   <div id="FirstTab" class="tabcontent">
-    <div class="container">
     <% if @in_group_transaction_dates.empty? %>
-      <h5>No expenses yet. Press the plus to add one!</h5>
+      <div class="container">
+        <h5>No expenses yet. Press the plus to add one!</h5>
+      </div>
     <% else %>
       <% @in_group_transaction_dates.each do |date| %>
-        <div class="title-section">
-          <h5 class="no-margin"><%= date %></h5>
+        <div class="date-section">
+          <div class="container">
+            <h5 class="no-margin"><%= date %></h5>
+          </div>
         </div>
         <hr class="no-margin">
         <% @in_group_transactions.each do |transaction| %>
@@ -87,6 +89,77 @@
               <% if transaction.description == "Settled" %>
                 <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
                 <div class="list-item-tall">
+                  <div class="container">
+                    <div class="divider">
+                      <div class="list-item-divider-content">
+                        <p class="list-item-text">You paid back <strong><%= transaction.splits.first.user.first_name %></strong></p>
+                        <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
+                      </div>
+                      <div class="list-item-arrow-btn .align-baseline">
+                        <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+              <% else %>
+                <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
+                  <div class="list-item-tall">
+                    <div class="container">
+                      <div class="divider">
+                        <div class="list-item-divider-content">
+                          <p class="list-item-text">You paid for <strong><%= transaction.title %></strong> in <strong><%= transaction.group.name %></strong></p>
+                          <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
+                        </div>
+                        <div class="list-item-arrow-btn .align-baseline">
+                          <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <%= link_to expense_path(transaction.expense, user_id: @user.id, group_id: @group.id) do %>
+                <div class="list-item-tall">
+                  <div class="container">
+                    <div class="divider">
+                      <div class="list-item-divider-content">
+                        <p class="list-item-text"><strong><%= transaction.expense.user.first_name %> <%= transaction.expense.user.last_name %></strong> paid for your <strong><%= transaction.expense.title %></strong> in <strong><%= transaction.expense.group.name %></strong></p>
+                        <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
+                      </div>
+                      <div class="list-item-arrow-btn .align-baseline">
+                        <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div id="All" class="tabcontent" style="display: none;">
+    <% if @transaction_dates.empty? %>
+      <h5>No expenses yet. Press the plus to add one!</h5>
+    <% else %>
+      <% @transaction_dates.each do |date| %>
+        <div class="date-section">
+          <div class="container">
+            <h5 class="no-margin"><%= date %></h5>
+          </div>
+        </div>
+        <hr class="no-margin">
+        <% @transactions.each do |transaction| %>
+          <% if transaction.created_at.strftime("%d/%m/%Y") == date %>
+            <% if transaction.class.name == "Expense" %>
+              <% if transaction.description == "Settled" %>
+              <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
+              <div class="list-item-tall">
+                <div class="container">
                   <div class="divider">
                     <div class="list-item-divider-content">
                       <p class="list-item-text">You paid back <strong><%= transaction.splits.first.user.first_name %></strong></p>
@@ -97,25 +170,28 @@
                     </div>
                   </div>
                 </div>
-                <% end %>
-              <% else %>
-                <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
-                  <div class="list-item-tall">
-                    <div class="divider">
-                      <div class="list-item-divider-content">
-                        <p class="list-item-text">You paid for <strong><%= transaction.title %></strong> in <strong><%= transaction.group.name %></strong></p>
-                        <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
-                      </div>
-                      <div class="list-item-arrow-btn .align-baseline">
-                        <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
-                      </div>
+              </div>
+              <% end %>
+              <% end %>
+              <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
+              <div class="list-item-tall">
+                <div class="container">
+                  <div class="divider">
+                    <div class="list-item-divider-content">
+                      <p class="list-item-text">You paid for <strong><%= transaction.title %></strong> in <strong><%= transaction.group.name %></strong></p>
+                      <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
+                    </div>
+                    <div class="list-item-arrow-btn .align-baseline">
+                      <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
                     </div>
                   </div>
-                <% end %>
+                </div>
+              </div>
               <% end %>
-            <% else %>
+              <% else %>
               <%= link_to expense_path(transaction.expense, user_id: @user.id, group_id: @group.id) do %>
-                <div class="list-item-tall">
+              <div class="list-item-tall">
+                <div class="container">
                   <div class="divider">
                     <div class="list-item-divider-content">
                       <p class="list-item-text"><strong><%= transaction.expense.user.first_name %> <%= transaction.expense.user.last_name %></strong> paid for your <strong><%= transaction.expense.title %></strong> in <strong><%= transaction.expense.group.name %></strong></p>
@@ -126,68 +202,6 @@
                     </div>
                   </div>
                 </div>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-    </div>
-  </div>
-
-  <div id="All" class="tabcontent" style="display: none;">
-    <div class="container">
-    <% if @transaction_dates.empty? %>
-      <h5>No expenses yet. Press the plus to add one!</h5>
-    <% else %>
-      <% @transaction_dates.each do |date| %>
-        <div class="title-section">
-          <h5 class="no-margin"><%= date %></h5>
-        </div>
-        <hr class="no-margin">
-        <% @transactions.each do |transaction| %>
-          <% if transaction.created_at.strftime("%d/%m/%Y") == date %>
-            <% if transaction.class.name == "Expense" %>
-              <% if transaction.description == "Settled" %>
-              <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
-              <div class="list-item-tall">
-                <div class="divider">
-                  <div class="list-item-divider-content">
-                    <p class="list-item-text">You paid back <strong><%= transaction.splits.first.user.first_name %></strong></p>
-                    <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
-                  </div>
-                  <div class="list-item-arrow-btn .align-baseline">
-                    <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
-                  </div>
-                </div>
-              </div>
-              <% end %>
-              <% end %>
-              <%= link_to expense_path(transaction, user_id: @user.id, group_id: @group.id) do %>
-              <div class="list-item-tall">
-                <div class="divider">
-                  <div class="list-item-divider-content">
-                    <p class="list-item-text">You paid for <strong><%= transaction.title %></strong> in <strong><%= transaction.group.name %></strong></p>
-                    <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
-                  </div>
-                  <div class="list-item-arrow-btn .align-baseline">
-                    <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
-                  </div>
-                </div>
-              </div>
-              <% end %>
-              <% else %>
-              <%= link_to expense_path(transaction.expense, user_id: @user.id, group_id: @group.id) do %>
-              <div class="list-item-tall">
-                <div class="divider">
-                  <div class="list-item-divider-content">
-                    <p class="list-item-text"><strong><%= transaction.expense.user.first_name %> <%= transaction.expense.user.last_name %></strong> paid for your <strong><%= transaction.expense.title %></strong> in <strong><%= transaction.expense.group.name %></strong></p>
-                    <p class="list-item-text" ><%= humanized_money_with_symbol transaction.amount %></p>
-                  </div>
-                  <div class="list-item-arrow-btn .align-baseline">
-                    <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
-                  </div>
-                </div>
               </div>
               <% end %>
             <% end %>
@@ -195,6 +209,5 @@
         <% end %>
       <% end %>
     <% end %>
-    </div>
   </div>
 <% end %>

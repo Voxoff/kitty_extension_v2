@@ -20,6 +20,10 @@
   height:56px;
 }
 
+.h3-lighter {
+  font-weight: 300;
+}
+
 // KEY BODY TAGS DEFINED
 
 body {
@@ -79,6 +83,7 @@ h2, .h2 {
 h3, .h3 {
   font-size: 1.953rem;
   line-height: 2.25rem;
+  font-weight: 500
 }
 
 h4, .h4 {

@@ -4,3 +4,11 @@
   justify-content: space-between;
   align-items: baseline;
 }
+
+.date-section {
+  height: 56px
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  background-color: $light-gray;
+}
