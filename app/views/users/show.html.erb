@@ -1,7 +1,9 @@
 <div class="profile-header text-center">
-  <%= image_tag @profile_owner.image, class: "avatar-profile-picture" %>
+  <%= image_tag @profile_owner.image + "?type=large", class: "avatar-profile-picture" %>
   <h2 class="color-white"><%= @profile_owner.first_name %> <%= @profile_owner.last_name %></h2>
-  <h5 class="color-white"><%= @profile_owner.email %></h5>
+  <% if @profile_owner != @user && @user.outstanding_with_person_overall(@profile_owner) < 0 %>
+    <p class="btn btn-primary no-margin btn-filled-primary settle-up-button" data-id="<%= @profile_owner.id %>" data-name="<%= @profile_owner.first_name %>" data-amount="<%= humanized_money_with_symbol (@user.outstanding_with_person_overall(@profile_owner) * -1) %>">Settle Up</p>
+  <% end %>
 </div>
 
 <div class="container">
@@ -14,10 +16,10 @@
         <p class="mb-3">Across all groups, all square:</p>
         <h4 class="no-margin">£0.00</h4>
       <% elsif @balance > 0 %>
-        <p class="mb-3">Across all groups, owed:</p>
+        <p class="mb-3">Across all groups, <%= @profile_owner.first_name %> owed:</p>
         <h4 class="no-margin color-primary"><span class="color-primary"><%= humanized_money_with_symbol @balance %></span></h4>
       <% else %>
-        <p class="mb-3">Across all groups, owe:</p>
+        <p class="mb-3">Across all groups, <%= @profile_owner.first_name %> owes:</p>
         <h4 class="no-margin color-danger"><span class="color-danger"><%= humanized_money_with_symbol (@balance * -1) %></span></h4>
       <% end %>
     </div>
@@ -48,3 +50,96 @@
   </div>
   <div class="card-row-space"></div>
 </div>
+
+<!-- JAVASCRIPT FOR THE BUTTON TO SEND TO GROUP, TURN KITTY_CREATED=TRUE AND REDIRECT -->
+<% content_for(:after_js) do %>
+  <!-- Including the Facebook Extension SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.com/en_GB/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+  </script>
+
+  <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.1.1/sweetalert2.all.min.js' %>
+
+  <script>
+    settleUpButtons = document.querySelectorAll(".settle-up-button")
+    settleUpButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        let settleWithId = button.dataset.id
+        let settleWithName = button.dataset.name
+        let settleWithAmount = button.dataset.amount
+        let message = {
+                      "attachment":{
+                        "type":"template",
+                        "payload":{
+                          "template_type":"generic",
+                          "elements": [{
+                            "title":`<%= @user.first_name %> just settled all with ${settleWithName}`,
+                            "subtitle": `Overall they settled ${settleWithAmount} across all shared Kittys.`,
+                            "buttons":[{
+                              "type":"web_url",
+                              "url":"<%= ENV['NGROK'] %>",
+                              "title":"View the Expense",
+                              "webview_height_ratio": "full",
+                              "webview_share_button": "hide",
+                              "messenger_extensions": true
+                            }]
+                          }]
+                        }
+                      }
+                    };
+        swal({
+                  title: "Confirmation",
+                  text: `You have paid ${settleWithName} ${settleWithAmount}?`,
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: '#60D173',
+                  confirmButtonText: 'Yes, I have!',
+                  cancelButtonText: "No, cancel it!",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+              }).then((result) => {
+                                    if (result.value) {
+                                      swal({
+                                        title: 'Settled Up!',
+                                        text: 'You are settled over all Kittys',
+                                        type: 'success',
+                                        confirmButtonColor: '#60D173',
+                                        confirmButtonText: 'Ok!'
+                                      }).then(() => {
+                                        // Begin Facebook's Send to Group Flow
+                                        MessengerExtensions.beginShareFlow(function(share_response) {
+                                          if(share_response.is_sent){
+                                            // The user actually did share.
+                                            // Perhaps close the window w/ requestCloseBrowser().
+                                            window.location.href = `<%= user_settle_all_path %>?settle_with_id=${settleWithId}`
+                                          }
+                                          else {
+                                            window.location.href = `<%= user_settle_all_path %>?settle_with_id=${settleWithId}`
+                                          }
+                                        },
+                                        function(errorCode, errorMessage) {
+                                        // An error occurred in the process of sending message, do nothing
+                                        },
+                                        message,
+                                        "broadcast");
+                                      })
+                                    } else if (result.dismiss === 'cancel') {
+                                      swal({
+                                        title: 'Cancelled!',
+                                        text: "You haven't settled up just yet",
+                                        type: 'error',
+                                        confirmButtonColor: '#C4183C',
+                                        confirmButtonText: 'Close'
+                                      })
+                                    }
+                                  })
+      })
+    })
+  </script>
+<% end %>

@@ -18,7 +18,7 @@
   <% if @expense.description == "Settled" %>
     <div class="list-item-tall">
       <div class="profile-img-container mr-4">
-        <%= image_tag @expense.user.image, class: "avatar-medium" %>
+        <%= image_tag @expense.user.image + "?type=normal", class: "avatar-medium" %>
       </div>
       <div class="arrow-right-container text-center">
         <p class="under-avatar-text no-margin">Paid Back: <%= humanized_money_with_symbol @expense.amount %></p>
@@ -26,7 +26,7 @@
         <p class="under-avatar-text no-margin"><%= @expense.created_at.strftime("%b %d, %Y") %></p>
       </div>
       <div class="profile-img-container ml-4">
-        <%= image_tag @expense.splits.first.user.image, class: "avatar-medium" %>
+        <%= image_tag @expense.splits.first.user.image + "?type=normal", class: "avatar-medium" %>
       </div>
     </div>
   <% else %>

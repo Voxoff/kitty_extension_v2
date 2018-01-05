@@ -17,23 +17,28 @@
 <div class="container">
   <% @group.users.each do |member| %>
     <% next if member == @user %>
-    <div class="list-item-tall">
-      <div class="profile-img-container">
-        <%= image_tag member.image, class: "avatar-medium" %>
-      </div>
-      <div class="divider">
-        <div class="list-item-divider-content">
-          <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
-          <% if @user.outstanding_with_person_in_group(member, @group) == 0 %>
-            <p class="list-item-text" >You're all square</p>
-          <% elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
-            <p class="list-item-text" >You owe: <span class="color-danger"> <%= humanized_money_with_symbol (@user.outstanding_with_person_in_group(member, @group) * -1) %></span></p>
-          <% else %>
-            <p class="list-item-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_in_group(member, @group) %></span></p>
-          <% end %>
+    <%= link_to user_path(member) do %>
+      <div class="list-item-tall">
+        <div class="profile-img-container">
+          <%= image_tag member.image + "?type=normal", class: "avatar-medium" %>
+        </div>
+        <div class="divider">
+          <div class="list-item-divider-content">
+            <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
+            <% if @user.outstanding_with_person_in_group(member, @group) == 0 %>
+              <p class="list-item-text" >You're all square</p>
+            <% elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
+              <p class="list-item-text" >You owe: <span class="color-danger"> <%= humanized_money_with_symbol (@user.outstanding_with_person_in_group(member, @group) * -1) %></span></p>
+            <% else %>
+              <p class="list-item-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_in_group(member, @group) %></span></p>
+            <% end %>
+          </div>
+          <div class="list-item-arrow-btn">
+              <p class="list-item-text" ><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 

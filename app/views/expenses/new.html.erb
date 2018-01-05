@@ -33,7 +33,7 @@
       <div class="row">
         <div class="col">
           <div class="user-selector-area text-center">
-            <%= image_tag @user.image, class: "avatar-large avatar-new", data: { id: @user.id } %>
+            <%= image_tag @user.image + "?type=normal", class: "avatar-large avatar-new", data: { id: @user.id } %>
             <p class="under-avatar-text"><%= @user.first_name %> (Me)</p>
           </div>
         </div>
@@ -43,7 +43,7 @@
           <% end %>
           <div class="col">
             <div class="user-selector-area text-center">
-              <%= image_tag member.image, class: "avatar-large avatar-new", data: { id: member.id } %>
+              <%= image_tag member.image + "?type=normal", class: "avatar-large avatar-new", data: { id: member.id } %>
               <p class="under-avatar-text"><%= member.first_name %></p>
             </div>
           </div>
@@ -54,7 +54,7 @@
         <div class="row">
           <div class="col-3">
             <div class="user-selector-area text-center">
-              <%= image_tag @user.image, class: "avatar-large avatar-new", data: { id: @user.id } %>
+              <%= image_tag @user.image + "?type=normal", class: "avatar-large avatar-new", data: { id: @user.id } %>
               <p class="under-avatar-text"><%= @user.first_name %> (Me)</p>
             </div>
           </div>
@@ -64,7 +64,7 @@
             <% end %>
             <div class="col-3">
               <div class="user-selector-area text-center">
-                <%= image_tag member.image, class: "avatar-large avatar-new", data: { id: member.id } %>
+                <%= image_tag member.image + "?type=normal", class: "avatar-large avatar-new", data: { id: member.id } %>
                 <p class="under-avatar-text"><%= member.first_name %></p>
               </div>
             </div>
