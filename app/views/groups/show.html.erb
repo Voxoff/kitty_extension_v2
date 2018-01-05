@@ -1,6 +1,6 @@
 <!-- Defining Nav Title -->
 <% if @user.outstanding_with_group(@group) == 0 %>
-  <% @nav_title = "You're all square" %>
+  <% @nav_title = "All square" %>
 <% elsif @user.outstanding_with_group(@group) < 0 %>
   <% @nav_title = "You owe #{humanized_money_with_symbol (@user.outstanding_with_group(@group) * -1)}" %>
 <% else %>
@@ -26,7 +26,7 @@
           <div class="list-item-divider-content">
             <p class="list-item-text"><strong><%= member.first_name %> <%= member.last_name %></strong></p>
             <% if @user.outstanding_with_person_in_group(member, @group) == 0 %>
-              <p class="list-item-text" >You're all square</p>
+              <p class="list-item-text" >All square</p>
             <% elsif @user.outstanding_with_person_in_group(member, @group) < 0 %>
               <p class="list-item-text" >You owe: <span class="color-danger"> <%= humanized_money_with_symbol (@user.outstanding_with_person_in_group(member, @group) * -1) %></span></p>
             <% else %>
@@ -42,12 +42,12 @@
   <% end %>
 </div>
 
-<div class="section-spacer"></div>
+<div class="mb-2"></div>
 
 <!-- SECTION TO SHOW EXPENSES -->
 <div class="container">
   <div class="title-section">
-    <h3>Recent Expenses</h3>
+    <h3>Recent Spending</h3>
   </div>
 </div>
 
@@ -55,7 +55,7 @@
   <% if @group.expenses.empty? %>
     <h5>No expenses yet. Press the plus to add one!</h5>
   <% else %>
-    <% @group.expenses.reverse.first(5).each do |expense| %>
+    <% @group.expenses.reverse.first(10).each do |expense| %>
       <%= link_to expense_path(expense) do %>
         <div class="list-item-short">
           <div class="divider">

@@ -34,13 +34,14 @@ class UsersController < ApplicationController
     @user = current_user
     @group = current_group
     @users = User.all
+    @friends = get_users_friends(@user)
 
-    @users_user_owed_by = users_user_owed_by(@user, @users)
-    @users_user_owes = users_user_owes(@user, @users)
-
-    if @users_user_owed_by.length == 0 && @users_user_owes.length == 0
-      render 'owes_and_owed_by_no_one'
-    end
+    # @users_user_owed_by = users_user_owed_by(@user, @users)
+    # @users_user_owes = users_user_owes(@user, @users)
+    #
+    # if @users_user_owed_by.length == 0 && @users_user_owes.length == 0
+    #   render 'owes_and_owed_by_no_one'
+    # end
   end
 
   def dashboard
@@ -75,6 +76,16 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def get_users_friends(user)
+    friends = []
+    user.groups.each do |group|
+      group.users.each do |member|
+        friends << member
+      end
+    end
+    p friends.uniq.sort { |a,b| a.first_name.downcase <=> b.first_name.downcase }
+  end
 
   def settle_up_in_each_group(user, settle_with_user)
     user_groups = Group.joins(:memberships).where(memberships: {user_id: user.id})

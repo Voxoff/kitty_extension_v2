@@ -134,7 +134,7 @@ class GroupsController < ApplicationController
 
   def determine_navbar_title(user_outstanding_with_group)
     if user_outstanding_with_group.to_f == 0
-      return "You're all square"
+      return "All square"
     elsif user_outstanding_with_group.to_f < 0
       return "You owe: £#{sprintf('%.2f', user_outstanding_with_group.to_f * -1 / 100)}"
     else

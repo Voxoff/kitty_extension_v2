@@ -16,7 +16,7 @@
         <p class="mb-3">Across all groups, all square:</p>
         <h4 class="no-margin">£0.00</h4>
       <% elsif @balance > 0 %>
-        <p class="mb-3">Across all groups, <%= @profile_owner.first_name %> owed:</p>
+        <p class="mb-3">Across all groups, <%= @profile_owner.first_name %> is owed:</p>
         <h4 class="no-margin color-primary"><span class="color-primary"><%= humanized_money_with_symbol @balance %></span></h4>
       <% else %>
         <p class="mb-3">Across all groups, <%= @profile_owner.first_name %> owes:</p>
