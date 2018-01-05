@@ -35,7 +35,15 @@ a {
 
 a:hover {
   color: $gray;
-  text-decoration: underline;
+  text-decoration: none;
+}
+a:focus {
+  color: $gray;
+  text-decoration: none;
+}
+a:active {
+  color: $gray;
+  text-decoration: none;
 }
 
 b, strong {

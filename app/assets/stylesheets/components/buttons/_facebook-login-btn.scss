@@ -1,11 +1,23 @@
 .facebook-login-btn {
-  height: 40px;
-  width: 180px;
-  background-color: $fb-login-blue;
+  height: 46px;
+  width: 320px;
+  background-color: transparent;
   color: white;
   border-radius: 3px;
+  border: 2px solid white;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.facebook-login-btn h4 {
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.facebook-login-btn h5 {
+  color: white;
+  transition: all 0.3s ease;
 }
 
 .facebook-login-btn a {
@@ -22,26 +34,37 @@
 
 .continue-with-facebook {
   color: white;
-  font-family: 'Roboto';
-  font-weight: bold;
-  font-size: 20px;
 }
 
 .continue-with-facebook-text {
   flex-grow: 1;
 }
 
-.facebook-login-btn:hover {
-    background-color: #8b9dc3;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+// .facebook-login-btn:hover {
+//     background-color: #8b9dc3;
+//     box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+// }
+//
+// .facebook-login-btn:active {
+//     background-color: #8b9dc3;
+//     box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+// }
+//
+// .facebook-login-btn:focus {
+//     background-color: #8b9dc3;
+//     box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+// }
+
+.add-white-background {
+  color: $green;
+  background-color: white;
 }
 
-.facebook-login-btn:active {
-    background-color: #8b9dc3;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+.add-white-background h4 {
+  color: $green;
+  text-decoration: none;
 }
-
-.facebook-login-btn:focus {
-    background-color: #8b9dc3;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.1)
+.add-white-background h5 {
+  color: $green;
+  text-decoration: none;
 }

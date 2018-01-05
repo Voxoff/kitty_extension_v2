@@ -1,23 +1,34 @@
-<div class="plain-card-content-center-vertical-max-height">
+<div class="plain-card-content-center-vertical-max-height card-gradient">
   <div class="content text-center">
-    <%= image_tag 'primary_logo_and_text.png', width: "300" %>
-    <div class="mb-4"></div>
+    <%= image_tag 'white_logo_and_text.png' %>
+    <div style="height:48px;"></div>
     <div class="container">
-      <h3 class="mb-4"> Simplify group spending. </h3>
-      <p> 1. Track group spending. <br> 2. Pay back when convient. <br> 3. Minimise transaction costs by minimising transactions.</p>
-      <p class="no-margin"> It's a new way of thinking.</p>
+      <h4 class="mt-4 mb-4 color-white" style="font-size:20px"> The home of group spending,<br> built into the home of groups</h4>
     </div>
-    <div class="facebook-btn-position">
-      <div class="facebook-login-btn">
-        <% unless current_user %>
-        <%= link_to user_facebook_omniauth_authorize_path do %>
-          <h5 class="no-margin continue-with-facebook pl-1"><i class="fa fa-facebook fa-fw fa-lg" aria-hidden="true"></i></h5>
-          <h5 class="no-margin text-center continue-with-facebook continue-with-facebook-text pl-3">Continue</h5>
-        <% end %>
-        <% else %>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-        <% end %>
-      </div>
-    </div>
+    <div style="height:120px;"></div>
+    <% unless current_user %>
+      <%# link_to user_facebook_omniauth_authorize_path do %>
+        <div class="facebook-btn-position">
+          <div class="facebook-login-btn">
+            <h5 class="no-margin pl-1 pr-1"><i class="fa fa-facebook fa-fw fa-lg" aria-hidden="true"></i></h5>
+            <h4 class="no-margin text-center pl-4" style="font-size:20px">Login with Facebook</h4>
+          </div>
+        </div>
+      <%# end %>
+    <% else %>
+      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    <% end %>
   </div>
 </div>
+
+<% content_for(:after_js) do %>
+  <script>
+    const button = document.querySelector(".facebook-login-btn")
+    button.addEventListener("click", () => {
+      button.classList.add("add-white-background")
+      setTimeout(function() {
+      window.location.href = `<%= user_facebook_omniauth_authorize_path %>`
+      }, 300);
+    })
+  </script>
+<% end %>
