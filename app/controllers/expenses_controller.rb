@@ -59,10 +59,11 @@ class ExpensesController < ApplicationController
     @group = current_group
 
     @expense = Expense.find(params[:id].to_i)
-    @converted_amount = convert_expense(@user, @expense)
-
     @title = expense_show_title(@expense)
+
+    @converted_amount = convert_expense(@user, @expense)
     @total_lent = total_lent(@expense)
+    @total_lent_converted = total_lent_converted(@user, @expense)
 
   end
 
@@ -94,6 +95,18 @@ class ExpensesController < ApplicationController
     total_amount = Money.new(0, expense.amount_currency)
     expense.splits.each do |split|
       total_amount += split.amount
+    end
+    return total_amount
+  end
+
+  def total_lent_converted(user, expense)
+    preferred_currency = user.preferred_currency
+    total_amount = Money.new(0, preferred_currency)
+    exchange_rate_object = ExchangeRate.find_by(id: expense.exchange_rates_id)
+    exchange_rate = exchange_rate_object[:rates][preferred_currency]
+    Money.add_rate(expense.amount_currency, preferred_currency, exchange_rate)
+    expense.splits.each do |split|
+      total_amount += split.amount.exchange_to(preferred_currency)
     end
     return total_amount
   end

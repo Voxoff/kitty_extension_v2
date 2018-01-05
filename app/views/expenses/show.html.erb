@@ -85,6 +85,10 @@
           <p class="no-margin">Converted Total:</p>
           <h4 class="no-margin"> <%= humanized_money_with_symbol @converted_amount %> </h4>
         </div>
+        <div>
+          <p class="no-margin">Converted Lent:</p>
+          <h4 class="no-margin"> <%= humanized_money_with_symbol @total_lent_converted %> </h4>
+        </div>
       </div>
       <% end %>
     </div>
