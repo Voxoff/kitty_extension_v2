@@ -23,6 +23,7 @@ gem 'foreman'
 gem 'money'
 gem 'money-rails'
 
+gem 'http'
 gem 'httparty', '~> 0.15.6'
 
 
