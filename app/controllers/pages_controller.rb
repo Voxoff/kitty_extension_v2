@@ -15,7 +15,7 @@ class PagesController < ApplicationController
   end
 
   def redirect
-    puts "got to redirect"
+    puts "go to redirect"
     @hidebtn = true
     @hidenav = true
 
