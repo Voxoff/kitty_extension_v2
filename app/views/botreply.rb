@@ -36,7 +36,7 @@ def get_started_reply(sender)
                   "id": "#{sender}"
                 },
                 "message": {
-                  "text": "Hi there, I'm Kitty. I help you and your friends stay ontop of group spending. See your profile or find out more by clicking the buttons below.",
+                  "text": "Hi there, I'm Kitty. I'll help you and your friends stay on top of group spending. See your profile or find out more by clicking the buttons below.",
                   "quick_replies":[
                                     {
                                       "content_type":"text",
