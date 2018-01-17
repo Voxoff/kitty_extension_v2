@@ -14,7 +14,7 @@
     <% else %>
     <div class="col-4">
       <div class="user-selector-area text-center">
-        <%= image_tag member.image + "?type=normal", class: "avatar-large avatar-new", data: { id: member.first_name, firstname: member.first_name, lastname: member.last_name, amountoutstanding: sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f / 100) } %>
+        <%= image_tag member.image + "?type=normal", class: "avatar-large avatar-new", data: { id: member.first_name, firstname: member.first_name, lastname: member.last_name, amountoutstanding: humanized_money_with_symbol(@user.outstanding_with_person_overall(member)) } %>
         <p class="under-avatar-text no-margin"><%= member.first_name %></p>
         <p class="under-avatar-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_overall(member) %></span></p>
       </div>
@@ -36,6 +36,17 @@
 <!-- Javascript -->
 <!-- ##################################################################################################################### -->
 <% content_for(:after_js) do %>
+  <!-- Including the Facebook Extension SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.com/en_GB/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+  </script>
+
   <script>
   // ###########################################################################################################
   // Page Wide Variables:
@@ -148,13 +159,13 @@
 
       function updateMessageSubtitle() {
         if (membersArray.length === 1 ) {
-          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes <%= @user.first_name %> £${amountOutstandingArray[0]}`;
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes <%= @user.first_name %> ${amountOutstandingArray[0]}`;
         }
         else if (membersArray.length === 2) {
-          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes £${amountOutstandingArray[0]} and ${membersArray[1]} owes £${amountOutstandingArray[1]}`;
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `${membersArray[0]} owes £${amountOutstandingArray[0]} and ${membersArray[1]} owes ${amountOutstandingArray[1]}`;
         }
         else {
-          message["attachment"]["payload"]["elements"][0]["subtitle"] = `Overall, <%= @user.first_name %> is owed £<%= sprintf("%.2f", @user.outstanding_with_group(@group)).to_f / 100 %>`;
+          message["attachment"]["payload"]["elements"][0]["subtitle"] = `Overall, <%= @user.first_name %> is owed <%= humanized_money_with_symbol @user.outstanding_with_group(@group) %>`;
         }
       }
   </script>
