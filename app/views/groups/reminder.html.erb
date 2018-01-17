@@ -16,7 +16,7 @@
       <div class="user-selector-area text-center">
         <%= image_tag member.image + "?type=normal", class: "avatar-large avatar-new", data: { id: member.first_name, firstname: member.first_name, lastname: member.last_name, amountoutstanding: sprintf("%.2f", @user.outstanding_with_person_overall(member).to_f / 100) } %>
         <p class="under-avatar-text no-margin"><%= member.first_name %></p>
-        <p class="under-avatar-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_overall(member, @group) %></span></p>
+        <p class="under-avatar-text">Owes you: <span class="color-primary"><%= humanized_money_with_symbol @user.outstanding_with_person_overall(member) %></span></p>
       </div>
     </div>
     <% end %>
