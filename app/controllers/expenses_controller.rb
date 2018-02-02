@@ -1,3 +1,5 @@
+require 'ocr_space'
+
 class ExpensesController < ApplicationController
   def new
     @hidebtn = true
@@ -64,7 +66,14 @@ class ExpensesController < ApplicationController
     @converted_amount = convert_expense(@user, @expense)
     @total_lent = total_lent(@expense)
     @total_lent_converted = total_lent_converted(@user, @expense)
+  end
 
+  def upload 
+    puts "in da house"
+    resource = OcrSpace::Resource.new(apikey: "#{ENV['ocr_space_key']}")
+    result = resource.convert file: "/home/guy/code/Voxoff/machineLearning/tesseract/python/final.jpg"
+    puts result
+    redirect_to new_expense_path
   end
 
   private

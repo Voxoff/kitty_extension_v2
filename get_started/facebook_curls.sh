@@ -13,7 +13,8 @@
 ################################################################################
 ################################################################################
 ################################################################################
-
+# Fitty: 
+#  EAAKziwfhwZC0BAAog5u7T4CHwFCvGTQsWH0qZCHNAke3X2w2LDRRpGGKHymFZBBOBRwMtQtv3Fn0DVX8zBJ2LoXRURZBU61Ljw7cieNSWo9zn6oQvqes3s0xtU5CVkz4IqboMx7Ja9o5IAjzb8zN43XZAHetEFpAu44hrutxzQAZDZD
 EAAKziwfhwZC0BAMpoAcKVoMEirDzacTFAs3XT6Y36wjoYsaNC0gvSz0ZCrzWZBEN1RzQPMx06yh5ZCuqKsjwuMAuvPrOESYwVIbnhXKZBPua1fyewiKNL6EveNNTZAL6lViRwHOcfohb1ZCrdKQ0tvNfAZBX44NgfEfYIcaotk7yWgZDZD
 
 # this gets all info from fb
@@ -27,9 +28,9 @@ curl -X GET "https://graph.facebook.com/v2.6/me/messenger_profile?fields=whiteli
 # ADAPT this to whitelist domain. "add" != "remove"
 curl -X POST -H "Content-Type: application/json" -d '{
   "setting_type" : "domain_whitelisting",
-  "whitelisted_domains" : ["https://kittyextension.herokuapp.com"],
+  "whitelisted_domains" : ["https://5af95689.ngrok.io"],
   "domain_action_type": "add"
-}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAKziwfhwZC0BAMpoAcKVoMEirDzacTFAs3XT6Y36wjoYsaNC0gvSz0ZCrzWZBEN1RzQPMx06yh5ZCuqKsjwuMAuvPrOESYwVIbnhXKZBPua1fyewiKNL6EveNNTZAL6lViRwHOcfohb1ZCrdKQ0tvNfAZBX44NgfEfYIcaotk7yWgZDZD"
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAKziwfhwZC0BAAog5u7T4CHwFCvGTQsWH0qZCHNAke3X2w2LDRRpGGKHymFZBBOBRwMtQtv3Fn0DVX8zBJ2LoXRURZBU61Ljw7cieNSWo9zn6oQvqes3s0xtU5CVkz4IqboMx7Ja9o5IAjzb8zN43XZAHetEFpAu44hrutxzQAZDZD"
 
 
 # This initiates the home url for Kitty

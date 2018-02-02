@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   # EXPENSES CONTROLLERS
   resources :expenses, only: [:new, :create, :show]
+  post '/expenses/upload', to: 'expenses#upload', as: 'expenses_upload'
 
   # WEBHOOKS CONTROLLER
   get 'webhooks', to: 'webhooks#messenger'
