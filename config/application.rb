@@ -12,6 +12,7 @@ module KittyExtensionV2
       generate.assets false
       generate.helper false
     end
+    # config.web_console.whitelisted_ips = '90.248.234.61'
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1

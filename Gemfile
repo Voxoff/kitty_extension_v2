@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
-ruby '2.3.5'
+ruby '2.6.1'
 
 gem 'devise'
 gem 'omniauth-facebook'
-gem 'figaro'
+gem 'dotenv-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'pg'
 gem 'puma'
